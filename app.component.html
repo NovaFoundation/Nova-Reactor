@@ -1,6 +1,15 @@
 <h1 id="header">NOVA REACTOR</h1>
 
-<input style="width: 475px;" type="text" placeholder="repo url, e.g. https://github.com/BSteffaniak/Nova" [url-validate]="repo.url" [(ngModel)]="repo.url" />
-<button [url-validate]="repo.url">Begin Analysis</button>
+<input style="width: 475px;" type="text" placeholder="repo url, e.g. https://github.com/BSteffaniak/Nova" [url-validate]="repo.url.value" [validator-pattern]="repo.url.validPattern" [(ngModel)]="repo.url.value" (valid-url)="updateUrlComponents($event)" (valid-update)="updateRepoUrlValid($event)" (keyup)="$event.key == 'Enter' && searchRepo()" />
+<button class="invalid" [url-validate]="repo.url.value" [validator-pattern]="repo.url.validPattern" (click)="repo.url.valid && searchRepo()">Begin Analysis</button>
+
+<div class="repo-results" [ngClass]="{ 'valid': repo.url.valid }">
+    <p *ngIf="repo.url.valid && !repo.user">Loading user...</p>
+    <div *ngIf="repo.name">
+        <h3 [textContent]="repo.name"></h3>
+        <github-user [username]="repo.username" (user-updated)="updateUser($event)"></github-user>
+        <github-repo [username]="repo.username" [repo]="repo.name" (repo-updated)="updateRepo($event)"></github-repo>
+    </div>
+</div>
 
 <ng-content></ng-content>
