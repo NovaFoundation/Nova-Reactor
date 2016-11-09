@@ -38,16 +38,35 @@ div.github-user {
 	display: inline-block;
 }
 
+div.github-user h3,
+div.github-user h5 {
+	margin: 0;
+}
+
 div.github-avatar {
 	width: 100px;
 	
 	border-radius: 50%;
 	
 	overflow: hidden;
+	
+	margin: auto;
 }
 
 div.github-avatar > img {
 	width: 100%;
+}
+
+.repo-info {
+	width: 50%;
+	max-width: 700px;
+	min-width: 400px;
+	margin: auto;
+}
+
+.repo-info td {
+	vertical-align: top;
+	text-align: center;
 }
 
 button {
