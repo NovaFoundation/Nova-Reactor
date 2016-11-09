@@ -31,12 +31,16 @@ button {
 	border: 2px solid white;
 }
 
+button.valid {
+	cursor: pointer;
+}
+
 button.invalid {
 	color: #eee;
 }
 
-button:active {
-	background-color: #c0c0c0;
+button.valid:active {
+	background-color: #e0e0e0;
 }
 
 textarea:focus, input:focus {
@@ -51,7 +55,7 @@ textarea.valid, input.valid {
     border-color: #9bcb3c;
 }
 
-textarea.invalid, input.invalid {
+textarea.dirty.invalid, input.dirty.invalid {
     border-color: #f15d3b;
 }
 
@@ -61,12 +65,19 @@ button, input {
 	padding: 10px;
 	
 	font-size: 20px;
+	
+	color: #444;
+	
+	-webkit-transition: 0.3s ease all;
+	transition: 0.3s ease all;
 }
 
 input {
-	-webkit-transition: 0.3s ease all;
-	transition: 0.3s ease all;
-	
     -webkit-transition-property: border;
     transition-property: border;
+}
+
+button {
+    -webkit-transition-property: color;
+    transition-property: color;
 }
