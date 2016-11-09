@@ -39,8 +39,8 @@ div.repo-container {
 
 div.repo-container,
 div.repo-info {
-	-webkit-transition: 2.3s ease all;
-	transition: 2.3s ease all;
+	-webkit-transition: 2s ease all;
+	transition: 2s ease all;
     -webkit-transition-property: max-height;
     transition-property: max-height;
 }
@@ -93,10 +93,15 @@ div.repo-results {
 
 div.repo-info {
 	opacity: 1;
+	
+	-webkit-transition: 1s ease all;
+	transition: 1s ease all;
+    -webkit-transition-property: opacity;
+    transition-property: opacity;
 }
 
 div.repo-container.loading-new div.repo-info {
-	opacity: 0.5;
+	opacity: 0;
 }
 
 div.github-user {
