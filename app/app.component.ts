@@ -100,10 +100,10 @@ export class AppComponent {
     urlUpdated(url: string) {
         if (url) {
             hashParams.url = url;
-            
-            updateHash();
         } else {
-            window.location.hash = "";
+            hashParams.url = undefined;
         }
+        
+        updateHash();
     }
 }
