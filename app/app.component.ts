@@ -53,7 +53,7 @@ export class AppComponent {
             this.repo.host = this.repo.host.substring(4);
         }
         
-        
+        this.repo.searching = true;
     }
     
     updateUrlComponents(url: string) {
@@ -72,9 +72,7 @@ export class AppComponent {
         this.repo.data = repo;
         
         console.log(repo);
-    }
-    
-    onKey(event) {
-        console.log(event);
+        
+        this.repo.searching = false;
     }
 }
