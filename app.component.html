@@ -4,8 +4,8 @@
 <button class="invalid" [url-validate]="repo.url.value" [validator-pattern]="repo.url.validPattern" (click)="repo.url.valid && searchRepo()">Begin Analysis</button>
 
 <div class="repo-results" [ngClass]="{ 'valid': repo.url.valid }">
-    <p *ngIf="repo.searching && !repo.data">Loading repo...</p>
-    <div *ngIf="repo.username">
+    <p *ngIf="repo.searching">Loading repo...</p>
+    <div *ngIf="repo.username" [style.display]="repo.searching && repo.data ? 'none' : 'block'">
         <table class="repo-info">
             <tr>
                 <td>

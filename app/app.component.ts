@@ -89,6 +89,8 @@ export class AppComponent {
     
     updateUser(user: any) {
         this.repo.user = user;
+        
+        this.repo.searching = false;
     }
     
     updateRepo(repo: any) {
