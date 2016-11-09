@@ -13,6 +13,7 @@ export class GithubRepo implements OnChanges {
     @Output('repo-updated') repoEmitter: EventEmitter<any> = new EventEmitter();
     
     model: any;
+    commits: any;
     
     ngOnChanges(changes: any) {
         this.repo = changes.repo.currentValue;
@@ -23,6 +24,9 @@ export class GithubRepo implements OnChanges {
                 this.model = repo;
                 
                 this.repoEmitter.emit(repo);
+            });
+            this.github.getCommits(this.username, this.repo).subscribe(commits => {
+                this.commits = commits.slice(0, Math.min(10, commits.length));
             });
         }
     }
