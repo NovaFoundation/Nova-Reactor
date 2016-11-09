@@ -25,6 +25,31 @@ a {
 	color: #aaa;
 }
 
+div.repo-container {
+	margin-top: 0;
+	max-height: 500px;
+	overflow: hidden;
+	
+	padding-bottom: 30px;
+	margin-bottom: -30px;
+}
+
+div.repo-container,
+div.repo-info {
+	-webkit-transition: 2.3s ease all;
+	transition: 2.3s ease all;
+    -webkit-transition-property: max-height;
+    transition-property: max-height;
+}
+
+div.repo-container.closed {
+	max-height: 0px;
+}
+
+div.repo-container.loading-new {
+	max-height: 100px;
+}
+
 hr {
 	border: 1.5px solid #444;
 	
@@ -58,11 +83,17 @@ hr:after {
 div.repo-results {
 	padding-top: 20px;
 	
-	opacity: 0.5;
+	overflow: hidden;
+	
+	position: relative;
 }
 
-div.repo-results.valid {
+div.repo-info {
 	opacity: 1;
+}
+
+div.repo-container.loading-new div.repo-info {
+	opacity: 0.5;
 }
 
 div.github-user {
@@ -84,11 +115,36 @@ div.github-avatar {
 	margin: auto;
 }
 
+p.repo-loading-text {
+	position: absolute;
+    font-size: 40px;
+    left: 0;
+    margin: 0;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%)translateY(8px);
+    
+    display: none;
+}
+
+p.repo-loading-text.searching {
+	display: block;
+}
+
 div.github-avatar > img {
 	width: 100%;
 }
 
-.repo-info {
+div.repo-info.searching {
+	max-height: 0px;
+}
+
+div.repo-info {
+	max-height: 500px;
+	overflow: hidden;
+}
+
+.repo-info table {
 	width: 100%;
 	max-width: 700px;
 	min-width: 400px;
@@ -98,6 +154,10 @@ div.github-avatar > img {
 .repo-info td {
 	vertical-align: top;
 	text-align: center;
+}
+
+p.loading-text {
+	margin-bottom: 0;
 }
 
 div.commits {
