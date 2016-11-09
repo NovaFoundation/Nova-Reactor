@@ -1,28 +1,41 @@
 import { Directive, ElementRef, HostListener, Input, Output, EventEmitter, Renderer, OnChanges, SimpleChange } from '@angular/core';
-import { Patterns } from './Patterns';
 
 @Directive({
-    selector: '[url-validate]',
-    host: {
-        "(onUrlUpdated)": "validateUrl($event)"
-    }
+    selector: '[url-validate]'
 })
 
 export class UrlValidator implements OnChanges {
     @Input('url-validate') value: string;
+    @Input('validator-pattern') pattern: RegExp;
+    @Input('valid-model') valid: boolean;
+    @Output('valid-url') urlEmitter: EventEmitter<string> = new EventEmitter();
+    @Output('valid-update') validEmitter: EventEmitter<boolean> = new EventEmitter();
+    
+    private lastValidUrl: string;
     
     validateUrl(url: string) {
-        var el = this.element.nativeElement;
-        
-        var valid = Patterns.validRepoPattern.test(url);
-        
-        this.renderer.setElementClass(el, 'valid', valid);
-        this.renderer.setElementClass(el, 'invalid', !valid);
-        this.renderer.setElementClass(el, 'dirty', typeof url !== 'undefined');
+        if (this.pattern) {
+            var el = this.element.nativeElement;
+            
+            this.valid = this.pattern.test(url);
+            this.validEmitter.emit(this.valid);
+            
+            if (this.valid && url != this.lastValidUrl) {
+                this.urlEmitter.emit(url);
+                
+                this.lastValidUrl = url;
+            }
+            
+            this.renderer.setElementClass(el, 'valid', this.valid);
+            this.renderer.setElementClass(el, 'invalid', !this.valid);
+            this.renderer.setElementClass(el, 'dirty', typeof url !== 'undefined');
+        }
     }
     
-    ngOnChanges(changes) {
-        this.validateUrl(changes.value.currentValue);
+    ngOnChanges(changes: any) {
+        if (typeof changes.value.currentValue === 'string') {
+            this.validateUrl(changes.value.currentValue.trim());
+        }
     }
     
     constructor(private element: ElementRef, private renderer: Renderer) {
