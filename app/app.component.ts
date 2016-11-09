@@ -20,7 +20,7 @@ export class AppComponent {
         name: undefined,
         username: undefined,
         host: undefined,
-        repo: undefined
+        data: undefined
     };
     
     constructor() {
@@ -69,7 +69,7 @@ export class AppComponent {
     }
     
     updateRepo(repo: any) {
-        this.repo.repo = repo;
+        this.repo.data = repo;
         
         console.log(repo);
     }
