@@ -25,10 +25,13 @@ a {
 	color: #aaa;
 }
 
+div.repo-info, div.repo-container {
+	max-height: 400px;
+	overflow: hidden;
+}
+
 div.repo-container {
 	margin-top: 0;
-	max-height: 500px;
-	overflow: hidden;
 	
 	padding-bottom: 30px;
 	margin-bottom: -30px;
@@ -137,11 +140,6 @@ div.github-avatar > img {
 
 div.repo-info.searching {
 	max-height: 0px;
-}
-
-div.repo-info {
-	max-height: 500px;
-	overflow: hidden;
 }
 
 .repo-info table {
