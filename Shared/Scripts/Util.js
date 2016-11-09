@@ -35,5 +35,11 @@ function getQueryString(params) {
 var hashParams = getHashParams();
 
 function updateHash() {
-    window.location.hash = getQueryString(hashParams);
+    var hash = getQueryString(hashParams);
+    
+    if (hash) {
+        window.location.hash = hash;
+    } else {
+        history.pushState("", document.title, window.location.pathname);
+    }
 }
