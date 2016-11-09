@@ -1,5 +1,5 @@
 export class Patterns {
-    static validRepoPattern: RegExp = /http[s]?:\/\/(www\.)?(github\.com|bitbucket\.org)\/([^/]+?\/([^/.]+?(\.git)?))$/;
+    static validRepoPattern: RegExp = /http[s]?:\/\/(www\.)?(github\.com|bitbucket\.org)\/([^/]+?\/([^/.]+?(\.git)?))$/i;
 
     constructor() {
         
