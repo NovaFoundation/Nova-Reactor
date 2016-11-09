@@ -47,6 +47,18 @@ export class AppComponent {
     }
     
     searchRepo() {
+        this.repo.searching = true;
+        
+        if (this.repo.data) {
+            setTimeout(() => {
+                this.updateRepoDataFromUrl();
+            }, 2000);
+        } else {
+            this.updateRepoDataFromUrl();
+        }
+    }
+    
+    updateRepoDataFromUrl() {
         var url = this.repo.url.value;
         
         if (url[url.length - 1] == '/') {
@@ -73,7 +85,6 @@ export class AppComponent {
             this.repo.host = this.repo.host.substring(4);
         }
         
-        this.repo.searching = true;
         this.updateRequiresReactorConfig(false);
     }
     
