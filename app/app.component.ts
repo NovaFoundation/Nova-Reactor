@@ -25,7 +25,10 @@ export class AppComponent {
         username: undefined,
         host: undefined,
         data: undefined,
-        searching: false
+        searching: false,
+        requiresConfig: false,
+        validClassLocation: false,
+        mainClassLocation: undefined
     };
     
     go: boolean = hashParams && hashParams.go == "true";
@@ -71,6 +74,7 @@ export class AppComponent {
         }
         
         this.repo.searching = true;
+        this.updateRequiresReactorConfig(false);
     }
     
     updateUrlComponents(url: string) {
@@ -107,5 +111,13 @@ export class AppComponent {
         }
         
         updateHash();
+    }
+    
+    updateRequiresReactorConfig(requires: boolean) {
+        this.repo.requiresConfig = requires;
+    }
+    
+    validateMainClassLocation(location: string) {
+        this.repo.validClassLocation = location && location.length > 0;
     }
 }
