@@ -16,6 +16,7 @@ export class AppComponent {
     repo = {
         url: {
             value: undefined,
+            previousValue: undefined,
             valid: false,
             username: undefined,
             validPattern: Patterns.validRepoPattern
@@ -47,18 +48,22 @@ export class AppComponent {
     }
     
     searchRepo() {
-        this.repo.searching = true;
-        
-        if (this.repo.data) {
-            setTimeout(() => {
+        if (this.repo.url.value != this.repo.url.previousValue) {
+            this.repo.searching = true;
+            
+            if (this.repo.data) {
+                setTimeout(() => {
+                    this.updateRepoDataFromUrl();
+                }, 2000);
+            } else {
                 this.updateRepoDataFromUrl();
-            }, 2000);
-        } else {
-            this.updateRepoDataFromUrl();
+            }
         }
     }
     
     updateRepoDataFromUrl() {
+        this.repo.url.previousValue = this.repo.url.value;
+        
         var url = this.repo.url.value;
         
         if (url[url.length - 1] == '/') {
