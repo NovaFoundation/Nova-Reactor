@@ -1,4 +1,8 @@
 <div class="github-repo" *ngIf="model" >
-    <h1 [textContent]="model ? model.name : 'idk'"></h1>
-    
+    <a [href]="model.html_url" target="_blank"><h1 [textContent]="model ? model.name : repo.name"></h1></a>
+    <div class="commits">
+        <div *ngFor="let c of commits" class="commit">
+            <a [href]="c.html_url" target="_blank" [title]="c.commit.message" [textContent]="c.commit.message"></a>
+        </div>
+    </div>
 </div>
