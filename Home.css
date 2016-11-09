@@ -24,6 +24,32 @@ html, body {
 	font-size: 72px;
 }
 
+div.repo-results {
+	padding-top: 20px;
+	
+	opacity: 0.5;
+}
+
+div.repo-results.valid {
+	opacity: 1;
+}
+
+div.github-user {
+	display: inline-block;
+}
+
+div.github-avatar {
+	width: 100px;
+	
+	border-radius: 50%;
+	
+	overflow: hidden;
+}
+
+div.github-avatar > img {
+	width: 100%;
+}
+
 button {
 	outline: none;
 	
