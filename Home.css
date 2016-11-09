@@ -16,6 +16,25 @@ a {
 	text-decoration: none;
 }
 
+.container {
+	max-width: 800px;
+	margin: auto;
+}
+
+hr {
+	border: 1.5px solid #444;
+}
+
+hr:after {
+	content: ' ';
+    width: 10px;
+    height: 10px;
+    background-color: #444;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%,-50%)rotateZ(45deg);
+}
+
 #splashscreen {
 	text-align: center;
 	
@@ -64,7 +83,7 @@ div.github-avatar > img {
 }
 
 .repo-info {
-	width: 50%;
+	width: 100%;
 	max-width: 700px;
 	min-width: 400px;
 	margin: auto;
