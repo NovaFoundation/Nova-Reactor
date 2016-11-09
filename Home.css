@@ -10,6 +10,12 @@ html, body {
 	color: #444;
 }
 
+a {
+	color: #444;
+	
+	text-decoration: none;
+}
+
 #splashscreen {
 	text-align: center;
 	
@@ -67,6 +73,21 @@ div.github-avatar > img {
 .repo-info td {
 	vertical-align: top;
 	text-align: center;
+}
+
+div.commits {
+	text-align: right;
+	margin: 0 !important;
+	overflow: hidden;
+	width: 300px;
+	display: inline-block;
+}
+
+div.commit a {
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	display: block;
+	overflow: hidden;
 }
 
 button {
