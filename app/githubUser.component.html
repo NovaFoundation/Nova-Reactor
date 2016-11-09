@@ -1,0 +1,9 @@
+<div class="github-user" *ngIf="model" >
+    <div>
+        <h3 [textContent]="model ? model.name || model.login : repo.username"></h3>
+        <h5 [textContent]="model ? model.login : repo.username"></h5>
+    </div>
+    <div class="github-avatar">
+        <img [src]="model.avatar_url" />
+    </div>
+</div>
