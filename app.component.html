@@ -22,7 +22,7 @@
 
     <div *ngIf="repo.requiresConfig">
         <hr />
-        <h3>This repository requires a .reactor.yml config file to be set up</h3>
+        <h3>This repository requires a .reactor.yml config file to be set up before continuing</h3>
         
         <input style="width: 520px;" type="text" placeholder="main class location, e.g. myproject/subfolder/Main.nova" [(ngModel)]="repo.mainClassLocation" (ngModelChange)="validateMainClassLocation($event)" />
         <button [ngClass]="{ invalid: !repo.validClassLocation }">Confirm</button>
