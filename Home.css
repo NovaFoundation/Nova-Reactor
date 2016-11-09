@@ -21,8 +21,14 @@ a {
 	margin: auto;
 }
 
+.light-gray {
+	color: #aaa;
+}
+
 hr {
 	border: 1.5px solid #444;
+	
+	margin: 30px 0;
 }
 
 hr:after {
