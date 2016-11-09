@@ -16,8 +16,8 @@ export class GithubRepo implements OnChanges {
     commits: any;
     
     ngOnChanges(changes: any) {
-        this.repo = changes.repo.currentValue;
-        this.username = changes.username.currentValue;
+        if (changes.repo) this.repo = changes.repo.currentValue;
+        if (changes.username) this.username = changes.username.currentValue;
         
         if (typeof this.repo === 'string' && typeof this.username === 'string') {
             this.github.getRepo(this.username, this.repo).subscribe(repo => {
