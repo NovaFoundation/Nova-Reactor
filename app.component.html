@@ -1,7 +1,6 @@
 <h1 id="header">NOVA REACTOR</h1>
 
-<form>
-    <input style="width: 475px;" type="text" [(ng-model)]="repo.url" placeholder="repo url, e.g. https://github.com/BSteffaniak/Nova" validate-input />
+<input style="width: 475px;" type="text" placeholder="repo url, e.g. https://github.com/BSteffaniak/Nova" [url-validate]="repo.url" [(ngModel)]="repo.url" />
+<button [url-validate]="repo.url">Begin Analysis</button>
 
-    <button validate-input>Begin Analysis</button>
-</form>
+<ng-content></ng-content>
