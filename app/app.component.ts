@@ -31,7 +31,9 @@ export class AppComponent {
         searching: false,
         requiresConfig: false,
         validClassLocation: false,
-        mainClassLocation: undefined
+        mainClassLocation: undefined,
+        rateLimitResetTime: undefined,
+        rateLimitResetTimeMessage: undefined
     };
     
     go: boolean = hashParams && hashParams.go == "true";
@@ -54,6 +56,8 @@ export class AppComponent {
             this.repo.searching = true;
             this.repo.invalidName = false;
             this.repo.invalidUsername = false;
+            this.repo.rateLimitResetTime = undefined;
+            this.repo.rateLimitResetTimeMessage = undefined;
             
             if (this.repo.data) {
                 setTimeout(() => {
@@ -142,10 +146,29 @@ export class AppComponent {
     }
     
     handleError(error: any) {
-        if (error.sender.constructor.name === 'GithubRepo') {
-            this.repo.invalidName = true;
-        } else if (error.sender.constructor.name === 'GithubUser') {
-            this.repo.invalidUsername = true;
+        var type = error.sender.constructor.name;
+        
+        if (error.response.status == 403) {
+            var repo = this.repo;
+            
+            error.response.headers.forEach(function (value, key) {
+                if (key.toLowerCase() == "x-ratelimit-reset") {
+                    repo.rateLimitResetTime = parseFloat(value[0]);
+                }
+            });
+            
+            var minutes = ~~((this.repo.rateLimitResetTime - Date.now() / 1000) / 60);
+            
+            this.repo.rateLimitResetTimeMessage = minutes + " minute" + (minutes != 1 ? "s" : "");
+        } else {
+            switch (type) {
+                case "GithubRepo":
+                    this.repo.invalidName = true;
+                    break;
+                case "GithubUser":
+                    this.repo.invalidUsername = true;
+                    break;
+            }
         }
         
         this.repo.searching = false;
