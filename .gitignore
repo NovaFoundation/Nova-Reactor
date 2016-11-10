@@ -1,5 +1,5 @@
-/app/*.js
-/app/*.map
+/app/**/*.js
+/app/**/*.map
 /node_modules
 /.gradle
 /build
