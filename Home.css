@@ -39,8 +39,8 @@ div.repo-container {
 
 div.repo-container,
 div.repo-info {
-	-webkit-transition: 2s ease all;
-	transition: 2s ease all;
+	-webkit-transition: 1s ease all;
+	transition: 1s ease all;
     -webkit-transition-property: max-height;
     transition-property: max-height;
 }
@@ -123,7 +123,7 @@ div.github-avatar {
 	margin: auto;
 }
 
-p.repo-loading-text {
+p.repo-overlay-text {
 	position: absolute;
     font-size: 40px;
     left: 0;
@@ -135,8 +135,16 @@ p.repo-loading-text {
     display: none;
 }
 
-p.repo-loading-text.searching {
+div.repo-container.searching p.repo-overlay-text.searching,
+div.repo-container.invalid-username p.repo-overlay-text.invalid-username,
+div.repo-container.invalid-repo-name p.repo-overlay-text.invalid-repo-name {
 	display: block;
+}
+
+/*div.repo-container.searching div.repo-info,*/
+div.repo-container.invalid-username div.repo-info,
+div.repo-container.invalid-repo-name div.repo-info {
+	opacity: 0.3;
 }
 
 div.github-avatar > img {
@@ -149,8 +157,6 @@ div.repo-info.searching {
 
 .repo-info table {
 	width: 100%;
-	max-width: 700px;
-	min-width: 400px;
 	margin: auto;
 }
 
