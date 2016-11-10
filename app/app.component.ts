@@ -102,6 +102,15 @@ export class AppComponent {
         this.updateRequiresReactorConfig(false);
     }
     
+    validMainClassLocation(location: string) {
+        return location && location.length > 0;
+    }
+    
+    invalidMainClassLocation(location: string) {
+        console.log(typeof location === 'string', !this.validMainClassLocation(location));
+        return typeof location === 'string' && !this.validMainClassLocation(location);
+    }
+    
     updateUrlComponents(url: string) {
         this.repo.url.value = url;
     }
@@ -143,7 +152,7 @@ export class AppComponent {
     }
     
     validateMainClassLocation(location: string) {
-        this.repo.validClassLocation = location && location.length > 0;
+        this.repo.validClassLocation = this.validMainClassLocation(location);
     }
     
     handleError(error: any) {
