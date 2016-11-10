@@ -23,7 +23,9 @@ export class AppComponent {
         },
         user: undefined,
         name: undefined,
+        invalidName: false,
         username: undefined,
+        invalidUsername: false,
         host: undefined,
         data: undefined,
         searching: false,
@@ -50,11 +52,13 @@ export class AppComponent {
     searchRepo() {
         if (this.repo.url.value != this.repo.url.previousValue) {
             this.repo.searching = true;
+            this.repo.invalidName = false;
+            this.repo.invalidUsername = false;
             
             if (this.repo.data) {
                 setTimeout(() => {
                     this.updateRepoDataFromUrl();
-                }, 2000);
+                }, 1000);
             } else {
                 this.updateRepoDataFromUrl();
             }
@@ -135,5 +139,15 @@ export class AppComponent {
     
     validateMainClassLocation(location: string) {
         this.repo.validClassLocation = location && location.length > 0;
+    }
+    
+    handleError(error: any) {
+        if (error.sender.constructor.name === 'GithubRepo') {
+            this.repo.invalidName = true;
+        } else if (error.sender.constructor.name === 'GithubUser') {
+            this.repo.invalidUsername = true;
+        }
+        
+        this.repo.searching = false;
     }
 }

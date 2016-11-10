@@ -10,8 +10,16 @@ import { GithubService } from './services/github.service';
 export class GithubUser implements OnChanges {
     @Input() username: string;
     @Output('user-updated') userEmitter: EventEmitter<any> = new EventEmitter();
+    @Output('error') errorEmitter: EventEmitter<any> = new EventEmitter();
     
     model: any;
+    
+    handleError(error: any) {
+        this.errorEmitter.emit({
+            response: error,
+            sender: this
+        });
+    }
     
     ngOnChanges(changes: any) {
         this.username = changes.username.currentValue;
@@ -21,7 +29,7 @@ export class GithubUser implements OnChanges {
                 this.model = user;
                 
                 this.userEmitter.emit(user);
-            });
+            }, error => this.handleError(error));
         }
     }
     

@@ -5,17 +5,19 @@
     <button class="invalid" [url-validate]="repo.url.value" [validator-pattern]="repo.url.validPattern" (click)="repo.url.valid && searchRepo()">Begin Analysis</button>
 
     <div class="repo-results">
-        <div class="repo-container" [ngClass]="{ 'loading-new': repo.searching && repo.data, 'closed': !repo.searching && !repo.username && !repo.data }">
-            <p class="repo-loading-text" [ngClass]="{ 'searching': repo.data && repo.searching }">Loading repo...</p>
+        <div class="repo-container" [ngClass]="{ 'loading-new': repo.searching && repo.data, 'closed': !repo.searching && !repo.username && !repo.data, 'searching': repo.data && repo.searching, 'invalid-username': repo.invalidUsername, 'invalid-repo-name': !repo.invalidUsername && repo.invalidName }">
+            <p class="repo-overlay-text searching">Loading repo...</p>
+            <p class="repo-overlay-text invalid-repo-name">Invalid repo name '{{ repo.name }}'</p>
+            <p class="repo-overlay-text invalid-username">Invalid username '{{ repo.username }}'</p>
             <hr />
             <div *ngIf="repo.username" class="repo-info">
                 <table>
                     <tr>
                         <td>
-                            <github-user [username]="repo.username" (user-updated)="updateUser($event)"></github-user>
+                            <github-user [username]="repo.username" (user-updated)="updateUser($event)" (error)="handleError($event)"></github-user>
                         </td>
                         <td>
-                            <github-repo [username]="repo.username" [repo]="repo.name" (repo-updated)="updateRepo($event)" (requires-reactor-config)="updateRequiresReactorConfig($event)"></github-repo>
+                            <github-repo [username]="repo.username" [repo]="repo.name" (repo-updated)="updateRepo($event)" (requires-reactor-config)="updateRequiresReactorConfig($event)" (error)="handleError($event)"></github-repo>
                         </td>
                     </tr>
                 </table>

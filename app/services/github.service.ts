@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers } from '@angular/http';
+import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/catch';
+import 'rxjs/add/observable/throw';
 
 @Injectable()
 export class GithubService {
@@ -14,18 +17,26 @@ export class GithubService {
     // f: any = [{"name":".gitignore","path":".gitignore","sha":"1028a4f0346273628dd00779320ae890d1876dd5","size":104,"url":"https://api.github.com/repos/BSteffaniak/Nova/contents/.gitignore?ref=master","html_url":"https://github.com/BSteffaniak/Nova/blob/master/.gitignore","git_url":"https://api.github.com/repos/BSteffaniak/Nova/git/blobs/1028a4f0346273628dd00779320ae890d1876dd5","download_url":"https://raw.githubusercontent.com/BSteffaniak/Nova/master/.gitignore","type":"file","_links":{"self":"https://api.github.com/repos/BSteffaniak/Nova/contents/.gitignore?ref=master","git":"https://api.github.com/repos/BSteffaniak/Nova/git/blobs/1028a4f0346273628dd00779320ae890d1876dd5","html":"https://github.com/BSteffaniak/Nova/blob/master/.gitignore"}},{"name":"README.md","path":"README.md","sha":"a3150feb19189c00679623c204e0ab746f70da3c","size":3615,"url":"https://api.github.com/repos/BSteffaniak/Nova/contents/README.md?ref=master","html_url":"https://github.com/BSteffaniak/Nova/blob/master/README.md","git_url":"https://api.github.com/repos/BSteffaniak/Nova/git/blobs/a3150feb19189c00679623c204e0ab746f70da3c","download_url":"https://raw.githubusercontent.com/BSteffaniak/Nova/master/README.md","type":"file","_links":{"self":"https://api.github.com/repos/BSteffaniak/Nova/contents/README.md?ref=master","git":"https://api.github.com/repos/BSteffaniak/Nova/git/blobs/a3150feb19189c00679623c204e0ab746f70da3c","html":"https://github.com/BSteffaniak/Nova/blob/master/README.md"}},{"name":"src","path":"src","sha":"aba7e025ab0473a78d3cf968d55e89358a9b5898","size":0,"url":"https://api.github.com/repos/BSteffaniak/Nova/contents/src?ref=master","html_url":"https://github.com/BSteffaniak/Nova/tree/master/src","git_url":"https://api.github.com/repos/BSteffaniak/Nova/git/trees/aba7e025ab0473a78d3cf968d55e89358a9b5898","download_url":null,"type":"dir","_links":{"self":"https://api.github.com/repos/BSteffaniak/Nova/contents/src?ref=master","git":"https://api.github.com/repos/BSteffaniak/Nova/git/trees/aba7e025ab0473a78d3cf968d55e89358a9b5898","html":"https://github.com/BSteffaniak/Nova/tree/master/src"}}];
     
     getUser(username: string) {
-        return this.http.get('https://api.github.com/users/' + username).map(res => res.json());
+        return this.http.get('https://api.github.com/users/' + username).map(res => res.json()).catch(error => {
+            return Observable.throw(error)
+        });
     }
     
     getRepo(username: string, repo: string) {
-        return this.http.get('https://api.github.com/repos/' + username + '/' + repo).map(res => res.json());
+        return this.http.get('https://api.github.com/repos/' + username + '/' + repo).map(res => res.json()).catch(error => {
+            return Observable.throw(error)
+        });
     }
     
     getCommits(username: string, repo: string) {
-        return this.http.get('https://api.github.com/repos/' + username + '/' + repo + '/commits').map(res => res.json());
+        return this.http.get('https://api.github.com/repos/' + username + '/' + repo + '/commits').map(res => res.json()).catch(error => {
+            return Observable.throw(error)
+        });
     }
     
     getContents(username: string, repo: string, path: string = "/") {
-        return this.http.get('https://api.github.com/repos/' + username + '/' + repo + '/contents' + path).map(res => res.json());
+        return this.http.get('https://api.github.com/repos/' + username + '/' + repo + '/contents' + path).map(res => res.json()).catch(error => {
+            return Observable.throw(error)
+        });
     }
 }
