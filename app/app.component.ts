@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { GithubService } from './services/github.service';
 import { Patterns } from './Patterns';
+import { RepoResults } from './components/repoResults.component';
 
 declare var hashParams: any;
 declare function getQueryString(hashParams: any): any;
@@ -115,14 +116,14 @@ export class AppComponent {
         }
     }
     
-    updateUser(user: any) {
-        this.repo.user = user;
-        
-        this.repo.searching = false;
-    }
-    
-    updateRepo(repo: any) {
-        this.repo.data = repo;
+    repoDataReceived(data: any) {
+        if (data.type == 'user') {
+            this.repo.user = data.data;
+        } else if (data.type == 'repo') {
+            this.repo.data = data.data;
+        } else {
+            console.error("Invalid data type given '" + data.type + "'");
+        }
         
         this.repo.searching = false;
     }

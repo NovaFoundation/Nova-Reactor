@@ -4,30 +4,7 @@
     <input style="width: 475px;" type="text" placeholder="repo url, e.g. https://github.com/BSteffaniak/Nova" [url-validate]="repo.url.value" [validator-pattern]="repo.url.validPattern" [(ngModel)]="repo.url.value" (valid-url)="updateUrlComponents($event)" (valid-update)="updateRepoUrlValid($event)" (keyup)="$event.key == 'Enter' && searchRepo()" (ngModelChange)="urlUpdated($event)" />
     <button class="invalid" [url-validate]="repo.url.value" [validator-pattern]="repo.url.validPattern" (click)="repo.url.valid && searchRepo()">Begin Analysis</button>
 
-    <div class="repo-results">
-        <div class="repo-container" [ngClass]="{ 'loading-new': repo.searching && repo.data, 'closed': !repo.searching && !repo.username && !repo.data, 'searching': repo.data && repo.searching, 'invalid-username': repo.invalidUsername, 'invalid-repo-name': !repo.invalidUsername && repo.invalidName, 'rate-limit-exceeded': repo.rateLimitResetTimeMessage }">
-            <div *ngIf="!repo.rateLimitExceeded">
-                <p class="repo-overlay-text searching">Loading repo...</p>
-                <p class="repo-overlay-text invalid-repo-name">Invalid repo name '{{ repo.name }}'</p>
-                <p class="repo-overlay-text invalid-username">Invalid username '{{ repo.username }}'</p>
-            </div>
-            <p class="repo-overlay-text rate-limit-exceeded">Github API request rate-limit has been exceeded. Try again in {{ repo.rateLimitResetTimeMessage }}</p>
-            <hr />
-            <div *ngIf="repo.username" class="repo-info">
-                <table>
-                    <tr>
-                        <td>
-                            <github-user [username]="repo.username" (user-updated)="updateUser($event)" (error)="handleError($event)"></github-user>
-                        </td>
-                        <td>
-                            <github-repo [username]="repo.username" [repo]="repo.name" (repo-updated)="updateRepo($event)" (requires-reactor-config)="updateRequiresReactorConfig($event)" (error)="handleError($event)"></github-repo>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-        <hr />
-    </div>
+    <repo-results [repo]="repo" (onDataReceived)="repoDataReceived($event)" (onErrorReceived)="handleError($event)" (onConfigStatusReceived)="updateRequiresReactorConfig($event)"></repo-results>
 
     <div *ngIf="repo.requiresConfig">
         <h3>This repository requires a <span class="light-gray">.reactor.yml</span> config file to be set up before continuing</h3>

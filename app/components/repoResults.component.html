@@ -1,0 +1,24 @@
+<div class="repo-results">
+    <div class="repo-container" [ngClass]="{ 'loading-new': repo.searching && repo.data, 'closed': !repo.searching && !repo.username && !repo.data, 'searching': repo.data && repo.searching, 'invalid-username': repo.invalidUsername, 'invalid-repo-name': !repo.invalidUsername && repo.invalidName, 'rate-limit-exceeded': repo.rateLimitResetTimeMessage }">
+        <div *ngIf="!repo.rateLimitExceeded">
+            <p class="repo-overlay-text searching">Loading repo...</p>
+            <p class="repo-overlay-text invalid-repo-name">Invalid repo name '{{ repo.name }}'</p>
+            <p class="repo-overlay-text invalid-username">Invalid username '{{ repo.username }}'</p>
+        </div>
+        <p class="repo-overlay-text rate-limit-exceeded">Github API request rate-limit has been exceeded. Try again in {{ repo.rateLimitResetTimeMessage }}</p>
+        <hr />
+        <div *ngIf="repo.username" class="repo-info">
+            <table>
+                <tr>
+                    <td>
+                        <github-user [username]="repo.username" (user-updated)="dataReceived($event, 'user')" (error)="handleError($event)"></github-user>
+                    </td>
+                    <td>
+                        <github-repo [username]="repo.username" [repo]="repo.name" (repo-updated)="dataReceived($event, 'repo')" (requires-reactor-config)="configStatusReceived($event)" (error)="handleError($event)"></github-repo>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <hr />
+</div>
