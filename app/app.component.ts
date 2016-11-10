@@ -107,7 +107,6 @@ export class AppComponent {
     }
     
     invalidMainClassLocation(location: string) {
-        console.log(typeof location === 'string', !this.validMainClassLocation(location));
         return typeof location === 'string' && !this.validMainClassLocation(location);
     }
     
