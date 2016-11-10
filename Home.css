@@ -39,10 +39,12 @@ div.repo-container {
 
 div.repo-container,
 div.repo-info {
+	min-height: 0px;
+	
 	-webkit-transition: 1s ease all;
 	transition: 1s ease all;
-    -webkit-transition-property: max-height;
-    transition-property: max-height;
+    -webkit-transition-property: min-height, max-height;
+    transition-property: min-height, max-height;
 }
 
 div.repo-container.closed {
@@ -51,6 +53,10 @@ div.repo-container.closed {
 
 div.repo-container.loading-new {
 	max-height: 100px;
+}
+
+div.repo-container.rate-limit-exceeded {
+	min-height: 120px;
 }
 
 hr {
@@ -137,13 +143,15 @@ p.repo-overlay-text {
 
 div.repo-container.searching p.repo-overlay-text.searching,
 div.repo-container.invalid-username p.repo-overlay-text.invalid-username,
-div.repo-container.invalid-repo-name p.repo-overlay-text.invalid-repo-name {
+div.repo-container.invalid-repo-name p.repo-overlay-text.invalid-repo-name,
+div.repo-container.rate-limit-exceeded p.repo-overlay-text.rate-limit-exceeded {
 	display: block;
 }
 
 /*div.repo-container.searching div.repo-info,*/
 div.repo-container.invalid-username div.repo-info,
-div.repo-container.invalid-repo-name div.repo-info {
+div.repo-container.invalid-repo-name div.repo-info,
+div.repo-container.rate-limit-exceeded div.repo-info {
 	opacity: 0.3;
 }
 
