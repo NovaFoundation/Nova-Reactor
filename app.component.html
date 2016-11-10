@@ -7,7 +7,7 @@
     <repo-results [repo]="repo" (onDataReceived)="repoDataReceived($event)" (onErrorReceived)="handleError($event)" (onConfigStatusReceived)="updateRequiresReactorConfig($event)"></repo-results>
 
     <div *ngIf="repo.requiresConfig">
-        <h3>This repository requires a <span tooltip="<span class='light-gray'>.reactor.yml</span> is a configuration file that you put in the root folder of your project, much like a .travis.yml file, that contains metadata on how to build the project." tooltip-max-width="400px"><span class="light-gray">.reactor.yml</span><img src="/Shared/Images/info.svg" class="info-icon" /></span> config file to be set up before continuing</h3>
+        <h3>This repository requires a <span tooltip="<span class='light-gray'>.reactor.yml</span> is a configuration file that you put in the root folder of your project, similar to a .travis.yml file, that contains metadata on how to build the project." tooltip-max-width="400px"><span class="light-gray">.reactor.yml</span><img src="/Shared/Images/info.svg" class="info-icon" /></span> config file to be set up before continuing</h3>
         
         <input style="width: 520px;" type="text" placeholder="main class location, e.g. myproject/subfolder/Main.nova" [(ngModel)]="repo.mainClassLocation" (ngModelChange)="validateMainClassLocation($event)" [ngClass]="{ valid: validMainClassLocation(repo.mainClassLocation), invalid: invalidMainClassLocation(repo.mainClassLocation) }" />
         <button [ngClass]="{ invalid: !repo.validClassLocation }">Confirm</button>
