@@ -6,6 +6,7 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
 
 declare function readCookie(name: string): string;
+declare function b64EncodeUnicode(value: string): string;
 
 @Injectable()
 export class GithubService {
@@ -49,9 +50,8 @@ export class GithubService {
         let options = new RequestOptions({ headers: headers });
         
         return this.http.put('https://api.github.com/repos/' + username + '/' + repo + '/contents/' + path, {
-            // path: path,
             message: commitMessage,
-            content: "bXkgbmV3IGZpbGUgY29udGVudHM="
+            content: b64EncodeUnicode(contents)
         }, options).map(res => res.json()).catch(error => {
             return Observable.throw(error)
         });
