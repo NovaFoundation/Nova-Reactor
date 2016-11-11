@@ -44,45 +44,46 @@ export class GithubService {
     }
     
     writeFile(username: string, repo: string, path: string, filename: string, commitMessage: string, contents: string) {
-        return new Observable(observer => {
-            this.requireAuthentication((success) => {
-                if (success) {
-                    let headers = new Headers({ 'Accept': 'application/json' });
-                    headers.append('Authorization', 'token ' + readCookie('github_access_token'));
-                    
-                    let options = new RequestOptions({ headers: headers });
-                    
-                    this.http.put('https://api.github.com/repos/' + username + '/' + repo + '/contents/' + path, {
-                        message: commitMessage,
-                        content: b64EncodeUnicode(contents)
-                    }, options).map(res => res.json()).catch(error => {
-                        return Observable.throw(error)
-                    }).subscribe(x => {
-                        observer.next(x);
-                    }, e => observer.error(e));
-                } else {
-                    observer.error(new Error("Not authenticated"));
-                }
-            });
+        return this.requireAuthentication(observer => {
+            let headers = new Headers({ 'Accept': 'application/json' });
+            headers.append('Authorization', 'token ' + readCookie('github_access_token'));
+            
+            let options = new RequestOptions({ headers: headers });
+            
+            this.http.put('https://api.github.com/repos/' + username + '/' + repo + '/contents/' + path, {
+                message: commitMessage,
+                content: b64EncodeUnicode(contents)
+            }, options).map(res => res.json()).catch(error => {
+                return Observable.throw(error)
+            }).subscribe(x => {
+                observer.next(x);
+            }, e => observer.error(e));
+        }, observer => {
+            observer.error(new Error("skipped-authentication"));
         });
     }
     
-    private requireAuthentication(callback: any) {
-        var pos = { x:200, y:200 };//screenCenterPos(800, 500);
-        
-        var signinWin = window.open("https://github.com/login/oauth/authorize?scope=repo&client_id=c8720bb8f589d74d6ad4",
-            "SignIn",
-            "width=780,height=410,toolbar=0,scrollbars=0,status=0,resizable=0,location=0,menuBar=0,left=" + pos.x + ",top=" + pos.y);
-        
-        signinWin.focus();
-        
-        var interval = setInterval(() => {
-            console.log("Reading");
-            if (readCookie("github_access_token") != null || signinWin.closed) {
-                clearInterval(interval);
-                console.log("!");
-                callback(readCookie("github_access_token") != null);
-            }
-        }, 250);
+    private requireAuthentication(success: any, failure: any) {
+        return new Observable(observer => {
+            var pos = { x:200, y:200 };//screenCenterPos(800, 500);
+            
+            var signinWin = window.open("https://github.com/login/oauth/authorize?scope=repo&client_id=c8720bb8f589d74d6ad4",
+                "SignIn",
+                "width=780,height=410,toolbar=0,scrollbars=0,status=0,resizable=0,location=0,menuBar=0,left=" + pos.x + ",top=" + pos.y);
+            
+            signinWin.focus();
+            
+            var interval = setInterval(() => {
+                if (readCookie("github_access_token") != null || signinWin.closed) {
+                    clearInterval(interval);
+                    
+                    if (readCookie("github_access_token") != null) {
+                        success(observer);
+                    } else {
+                        failure(observer);
+                    }
+                }
+            }, 250);
+        });
     }
 }
