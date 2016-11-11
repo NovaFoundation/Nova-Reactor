@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
-import { Http, Headers } from '@angular/http';
+import { Http, Headers, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
+
+declare function readCookie(name: string): string;
 
 @Injectable()
 export class GithubService {
@@ -36,6 +38,21 @@ export class GithubService {
     
     getContents(username: string, repo: string, path: string = "/") {
         return this.http.get('https://api.github.com/repos/' + username + '/' + repo + '/contents' + path).map(res => res.json()).catch(error => {
+            return Observable.throw(error)
+        });
+    }
+    
+    writeFile(username: string, repo: string, path: string, filename: string, commitMessage: string, contents: string) {
+        let headers = new Headers({ 'Accept': 'application/json' });
+        headers.append('Authorization', 'token ' + readCookie('github_access_token'));
+        
+        let options = new RequestOptions({ headers: headers });
+        
+        return this.http.put('https://api.github.com/repos/' + username + '/' + repo + '/contents/' + path, {
+            // path: path,
+            message: commitMessage,
+            content: "bXkgbmV3IGZpbGUgY29udGVudHM="
+        }, options).map(res => res.json()).catch(error => {
             return Observable.throw(error)
         });
     }
