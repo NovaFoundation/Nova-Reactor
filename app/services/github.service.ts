@@ -58,7 +58,7 @@ export class GithubService {
     }
     
     writeFile(username: string, repo: string, path: string, filename: string, commitMessage: string, contents: string) {
-        return this.requireAuthentication(observer => {
+        return this.authenticateGithubUser(observer => {
             this.http.put('https://api.github.com/repos/' + username + '/' + repo + '/contents/' + path, {
                 message: commitMessage,
                 content: b64EncodeUnicode(contents)
@@ -72,7 +72,7 @@ export class GithubService {
         });
     }
     
-    private requireAuthentication(success: any, failure: any) {
+    authenticateGithubUser(success: any, failure: any) {
         return new Observable(observer => {
             var pos = { x:200, y:200 };//screenCenterPos(800, 500);
             
