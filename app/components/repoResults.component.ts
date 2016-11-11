@@ -36,14 +36,6 @@ export class RepoResults implements OnChanges {
     }
     
     authenticateUser() {
-        this.github.authenticateGithubUser(observer => {
-            console.log("u r an authentic person");
-        }, observer => {
-            console.log("ur a fake");
-        }).subscribe(value => {
-            console.log("?");
-        }, error => {
-            console.log("uh oh");
-        });
+        this.github.authenticate();
     }
 }
