@@ -1,4 +1,7 @@
 import { Component } from '@angular/core';
+
+import { OAuthService } from 'angular2-oauth2/oauth-service';
+
 import { GithubService } from './services/github.service';
 import { Patterns } from './Patterns';
 import { RepoResults } from './components/repoResults.component';
@@ -10,7 +13,7 @@ declare function updateHash();
 @Component({
   selector: 'my-app',
   templateUrl: 'app.component.html',
-  providers: [GithubService]
+  providers: [GithubService, OAuthService]
 })
 
 export class AppComponent {
@@ -39,7 +42,7 @@ export class AppComponent {
     
     go: boolean = hashParams && hashParams.go == "true";
     
-    constructor() {
+    constructor(private oauth: OAuthService) {
         if (hashParams) {
             if (hashParams.url) {
                 this.repo.url.value = hashParams.url;
@@ -50,6 +53,41 @@ export class AppComponent {
                 updateHash();
             }
         }
+        /*
+        // Login-Url
+        this.oauth.loginUrl = ""; //Id-Provider?
+        
+        // URL of the SPA to redirect the user to after login
+        this.oauth.redirectUri = "http://nova-reactor.com/auth/github/callback";
+        
+        // The SPA's id. Register SPA with this id at the auth-server
+        this.oauth.clientId = "c8720bb8f589d74d6ad4";
+        
+        // The name of the auth-server that has to be mentioned within the token
+        this.oauth.issuer = "https://github.com/login";
+ 
+        // set the scope for the permissions the client should request
+        this.oauth.scope = "user:email";
+        
+        // set to true, to receive also an id_token via OpenId Connect (OIDC) in addition to the
+        // OAuth2-based access_token
+        this.oauth.oidc = false;
+        
+        // Use setStorage to use sessionStorage or another implementation of the TS-type Storage
+        // instead of localStorage
+        this.oauth.setStorage(sessionStorage);
+        
+        // To also enable single-sign-out set the url for your auth-server's logout-endpoint here
+        //this.oauth.logoutUrl = "https://steyer-identity-server.azurewebsites.net/identity/connect/endsession?id_token={{id_token}}";
+        
+        // This method just tries to parse the token within the url when
+        // the auth-server redirects the user back to the web-app
+        // It dosn't initiate the login
+        this.oauth.tryLogin({});
+        
+        this.oauth.initImplicitFlow();
+        
+        console.log("??");*/
     }
     
     searchRepo() {
@@ -181,5 +219,15 @@ export class AppComponent {
         }
         
         this.repo.searching = false;
+    }
+    
+    authenticateGithub() {
+        var pos = { x:200, y:200 };//screenCenterPos(800, 500);
+        
+        var signinWin = window.open("https://github.com/login/oauth/authorize?scope=user:email&client_id=c8720bb8f589d74d6ad4",
+            "SignIn",
+            "width=780,height=410,toolbar=0,scrollbars=0,status=0,resizable=0,location=0,menuBar=0,left=" + pos.x + ",top=" + pos.y);
+        
+        signinWin.focus();
     }
 }
