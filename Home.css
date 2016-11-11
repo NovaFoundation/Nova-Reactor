@@ -209,7 +209,7 @@ div.repo-container.rate-limit-exceeded p.repo-overlay-text.rate-limit-exceeded {
 div.repo-container.invalid-username div.repo-info,
 div.repo-container.invalid-repo-name div.repo-info,
 div.repo-container.rate-limit-exceeded div.repo-info {
-	opacity: 0.3;
+	opacity: 0.2;
 }
 
 div.github-avatar > img {
