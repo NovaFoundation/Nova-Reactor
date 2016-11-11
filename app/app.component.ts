@@ -36,7 +36,7 @@ export class AppComponent {
         searching: false,
         requiresConfig: false,
         configError: false,
-        validClassLocation: true,//false,
+        validClassLocation: false,
         mainClassLocation: undefined,
         rateLimitResetTime: undefined,
         rateLimitResetTimeMessage: undefined
@@ -54,48 +54,13 @@ export class AppComponent {
                 this.repo.url.value = hashParams.url;
             }
             if (hashParams.go) {
-                // hashParams.go = undefined;
+                hashParams.go = undefined;
                 
                 updateHash();
             }
         }
         
         handler = this.myApiHandler;
-        /*
-        // Login-Url
-        this.oauth.loginUrl = ""; //Id-Provider?
-        
-        // URL of the SPA to redirect the user to after login
-        this.oauth.redirectUri = "http://nova-reactor.com/auth/github/callback";
-        
-        // The SPA's id. Register SPA with this id at the auth-server
-        this.oauth.clientId = "c8720bb8f589d74d6ad4";
-        
-        // The name of the auth-server that has to be mentioned within the token
-        this.oauth.issuer = "https://github.com/login";
- 
-        // set the scope for the permissions the client should request
-        this.oauth.scope = "user:email";
-        
-        // set to true, to receive also an id_token via OpenId Connect (OIDC) in addition to the
-        // OAuth2-based access_token
-        this.oauth.oidc = false;
-        
-        // Use setStorage to use sessionStorage or another implementation of the TS-type Storage
-        // instead of localStorage
-        this.oauth.setStorage(sessionStorage);
-        
-        // To also enable single-sign-out set the url for your auth-server's logout-endpoint here
-        //this.oauth.logoutUrl = "https://steyer-identity-server.azurewebsites.net/identity/connect/endsession?id_token={{id_token}}";
-        
-        // This method just tries to parse the token within the url when
-        // the auth-server redirects the user back to the web-app
-        // It dosn't initiate the login
-        this.oauth.tryLogin({});
-        
-        this.oauth.initImplicitFlow();
-        
-        console.log("??");*/
     }
     
     searchRepo() {
@@ -235,14 +200,14 @@ export class AppComponent {
     authenticateGithub() {
         /*var pos = { x:200, y:200 };//screenCenterPos(800, 500);
         
-        var signinWin = window.open("https://github.com/login/oauth/authorize?scope=user:public_repo&client_id=c8720bb8f589d74d6ad4",
+        var signinWin = window.open("https://github.com/login/oauth/authorize?scope=repo&client_id=c8720bb8f589d74d6ad4",
             "SignIn",
             "width=780,height=410,toolbar=0,scrollbars=0,status=0,resizable=0,location=0,menuBar=0,left=" + pos.x + ",top=" + pos.y);
         
-        signinWin.focus();
-        */
-        this.github.writeFile(this.repo.user.login, this.repo.name, "reactor.yml", "reactor.yml", "Added .reactor.yml config file", this.repo.mainClassLocation).subscribe(response => {
+        signinWin.focus();*/
+        
+        /*this.github.writeFile(this.repo.user.login, this.repo.name, ".reactor.yml", ".reactor.yml", "Added .reactor.yml config file", "language: nova\nmainClassLocation: " + this.repo.mainClassLocation).subscribe(response => {
             console.log("Wrote: ", response);
-        }, error => this.handleError({ response: error, type: "create-config" }));
+        }, error => this.handleError({ response: error, type: "create-config" }));*/
     }
 }
