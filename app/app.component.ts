@@ -43,6 +43,7 @@ export class AppComponent {
         rateLimitResetTimeMessage: undefined
     };
     
+    loggedIn: boolean = readCookie('github_access_token') != null;
     go: boolean = hashParams && hashParams.go == "true";
     
     myApiHandler() {
@@ -199,19 +200,8 @@ export class AppComponent {
     }
     
     authenticateGithub() {
-        var pos = { x:200, y:200 };//screenCenterPos(800, 500);
-        
-        var signinWin = window.open("https://github.com/login/oauth/authorize?scope=repo&client_id=c8720bb8f589d74d6ad4",
-            "SignIn",
-            "width=780,height=410,toolbar=0,scrollbars=0,status=0,resizable=0,location=0,menuBar=0,left=" + pos.x + ",top=" + pos.y);
-        
-        signinWin.focus();
-        signinWin.onunload = function () {
-            console.log("coikei: ", readCookie("github_access_token"));
-        };
-        
-        /*this.github.writeFile(this.repo.user.login, this.repo.name, ".reactor.yml", ".reactor.yml", "Added .reactor.yml config file", "language: nova\nmainClassLocation: " + this.repo.mainClassLocation).subscribe(response => {
+        this.github.writeFile(this.repo.user.login, this.repo.name, ".reactor.yml", ".reactor.yml", "Added .reactor.yml config file", "language: nova\nmainClassLocation: " + this.repo.mainClassLocation).subscribe(response => {
             console.log("Wrote: ", response);
-        }, error => this.handleError({ response: error, type: "create-config" }));*/
+        }, error => this.handleError({ response: error, type: "create-config" }));
     }
 }
