@@ -7,6 +7,7 @@ import { Patterns } from './Patterns';
 import { RepoResults } from './components/repoResults.component';
 
 declare var hashParams: any;
+declare var handler: any;
 declare function getQueryString(hashParams: any): any;
 declare function updateHash();
 
@@ -42,6 +43,10 @@ export class AppComponent {
     
     go: boolean = hashParams && hashParams.go == "true";
     
+    myApiHandler() {
+        console.log("being handled...");
+    }
+    
     constructor(private oauth: OAuthService) {
         if (hashParams) {
             if (hashParams.url) {
@@ -53,6 +58,8 @@ export class AppComponent {
                 updateHash();
             }
         }
+        
+        handler = this.myApiHandler;
         /*
         // Login-Url
         this.oauth.loginUrl = ""; //Id-Provider?
