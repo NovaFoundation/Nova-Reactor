@@ -48,7 +48,7 @@ div.tooltip {
 	
 	position: absolute;
 	
-	pointer-events: none;
+	/*pointer-events: none;*/
 	
 	opacity: 1;
 	
@@ -101,7 +101,8 @@ div.repo-container.loading-new {
 	max-height: 100px;
 }
 
-div.repo-container.rate-limit-exceeded {
+div.repo-container.rate-limit-exceeded,
+div.repo-container.invalid-repo-name {
 	min-height: 120px;
 }
 
@@ -302,6 +303,15 @@ button, input {
 	
 	-webkit-transition: 0.3s ease all;
 	transition: 0.3s ease all;
+}
+
+button.skinny, input.skinny {
+	padding: 4px;
+}
+
+button.inline-button {
+	position: relative;
+	bottom: 3px;
 }
 
 input {
