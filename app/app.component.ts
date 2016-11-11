@@ -35,7 +35,8 @@ export class AppComponent {
         data: undefined,
         searching: false,
         requiresConfig: false,
-        validClassLocation: false,
+        configError: false,
+        validClassLocation: true,//false,
         mainClassLocation: undefined,
         rateLimitResetTime: undefined,
         rateLimitResetTimeMessage: undefined
@@ -47,13 +48,13 @@ export class AppComponent {
         console.log("being handled...");
     }
     
-    constructor(private oauth: OAuthService) {
+    constructor(private oauth: OAuthService, private github: GithubService) {
         if (hashParams) {
             if (hashParams.url) {
                 this.repo.url.value = hashParams.url;
             }
             if (hashParams.go) {
-                hashParams.go = undefined;
+                // hashParams.go = undefined;
                 
                 updateHash();
             }
@@ -200,7 +201,7 @@ export class AppComponent {
     }
     
     handleError(error: any) {
-        var type = error.sender.constructor.name;
+        var type = error.sender ? error.sender.constructor.name : error.type;
         
         if (error.response.status == 403) {
             var repo = this.repo;
@@ -222,6 +223,9 @@ export class AppComponent {
                 case "GithubUser":
                     this.repo.invalidUsername = true;
                     break;
+                case "create-config":
+                    this.repo.configError = true;
+                    break;
             }
         }
         
@@ -229,12 +233,16 @@ export class AppComponent {
     }
     
     authenticateGithub() {
-        var pos = { x:200, y:200 };//screenCenterPos(800, 500);
+        /*var pos = { x:200, y:200 };//screenCenterPos(800, 500);
         
-        var signinWin = window.open("https://github.com/login/oauth/authorize?scope=user:email&client_id=c8720bb8f589d74d6ad4",
+        var signinWin = window.open("https://github.com/login/oauth/authorize?scope=user:public_repo&client_id=c8720bb8f589d74d6ad4",
             "SignIn",
             "width=780,height=410,toolbar=0,scrollbars=0,status=0,resizable=0,location=0,menuBar=0,left=" + pos.x + ",top=" + pos.y);
         
         signinWin.focus();
+        */
+        this.github.writeFile(this.repo.user.login, this.repo.name, "reactor.yml", "reactor.yml", "Added .reactor.yml config file", this.repo.mainClassLocation).subscribe(response => {
+            console.log("Wrote: ", response);
+        }, error => this.handleError({ response: error, type: "create-config" }));
     }
 }
