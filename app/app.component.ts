@@ -35,7 +35,7 @@ export class AppComponent {
         host: undefined,
         data: undefined,
         searching: false,
-        requiresConfig: false,
+        configStatus: undefined,
         configError: false,
         validClassLocation: false,
         mainClassLocation: undefined,
@@ -43,6 +43,7 @@ export class AppComponent {
         rateLimitResetTimeMessage: undefined
     };
     
+    waitingReply: boolean = false;
     loggedIn: boolean = readCookie('github_access_token') != null;
     go: boolean = hashParams && hashParams.go == "true";
     
@@ -56,7 +57,7 @@ export class AppComponent {
                 this.repo.url.value = hashParams.url;
             }
             if (hashParams.go) {
-                hashParams.go = undefined;
+                // hashParams.go = undefined;
                 
                 updateHash();
             }
@@ -72,10 +73,13 @@ export class AppComponent {
             this.repo.invalidUsername = false;
             this.repo.rateLimitResetTime = undefined;
             this.repo.rateLimitResetTimeMessage = undefined;
+            this.repo.configStatus = undefined;
             
             if (this.repo.data) {
+                var url = this.repo.url.value;
+                
                 setTimeout(() => {
-                    this.updateRepoDataFromUrl();
+                    this.updateRepoDataFromUrl(url);
                 }, 1000);
             } else {
                 this.updateRepoDataFromUrl();
@@ -83,36 +87,37 @@ export class AppComponent {
         }
     }
     
-    updateRepoDataFromUrl() {
-        this.repo.url.previousValue = this.repo.url.value;
-        
-        var url = this.repo.url.value;
-        
-        if (url[url.length - 1] == '/') {
-            url = url.substring(0, url.length - 1);
+    updateRepoDataFromUrl(url: string = this.repo.url.value) {
+        if (!this.waitingReply) {
+            this.repo.url.previousValue = url;
+            
+            if (url[url.length - 1] == '/') {
+                url = url.substring(0, url.length - 1);
+            }
+            
+            var repoStartIndex = url.lastIndexOf('/');
+            
+            this.repo.name = url.substring(repoStartIndex + 1);
+            
+            if (this.repo.name.toLowerCase().indexOf('.git') > 0) {
+                this.repo.name = this.repo.name.substring(0, this.repo.name.length - 4);
+            }
+            
+            var userStartIndex = url.substring(0, repoStartIndex - 1).lastIndexOf('/');
+            
+            this.repo.username = url.substring(userStartIndex + 1, repoStartIndex);
+            
+            var hostStartIndex = url.substring(0, userStartIndex - 1).lastIndexOf('/');
+            
+            this.repo.host = url.substring(hostStartIndex + 1, userStartIndex - 4);
+            
+            if (this.repo.host.toLowerCase().indexOf('www.') == 0) {
+                this.repo.host = this.repo.host.substring(4);
+            }
+            
+            this.updateRequiresReactorConfig(false);
+            this.waitingReply = true;
         }
-        
-        var repoStartIndex = url.lastIndexOf('/');
-        
-        this.repo.name = url.substring(repoStartIndex + 1);
-        
-        if (this.repo.name.toLowerCase().indexOf('.git') > 0) {
-            this.repo.name = this.repo.name.substring(0, this.repo.name.length - 4);
-        }
-        
-        var userStartIndex = url.substring(0, repoStartIndex - 1).lastIndexOf('/');
-        
-        this.repo.username = url.substring(userStartIndex + 1, repoStartIndex);
-        
-        var hostStartIndex = url.substring(0, userStartIndex - 1).lastIndexOf('/');
-        
-        this.repo.host = url.substring(hostStartIndex + 1, userStartIndex - 4);
-        
-        if (this.repo.host.toLowerCase().indexOf('www.') == 0) {
-            this.repo.host = this.repo.host.substring(4);
-        }
-        
-        this.updateRequiresReactorConfig(false);
     }
     
     validMainClassLocation(location: string) {
@@ -147,6 +152,7 @@ export class AppComponent {
         }
         
         this.repo.searching = false;
+        this.waitingReply = false;
     }
     
     urlUpdated(url: string) {
@@ -160,7 +166,7 @@ export class AppComponent {
     }
     
     updateRequiresReactorConfig(requires: boolean) {
-        this.repo.requiresConfig = requires;
+        this.repo.configStatus = requires ? "requires" : "exists";
     }
     
     validateMainClassLocation(location: string) {
@@ -197,11 +203,14 @@ export class AppComponent {
         }
         
         this.repo.searching = false;
+        this.waitingReply = false;
     }
     
     authenticateGithub() {
-        this.github.writeFile(this.repo.user.login, this.repo.name, ".reactor.yml", ".reactor.yml", "Added .reactor.yml config file", "language: nova\nmainClassLocation: " + this.repo.mainClassLocation).subscribe(response => {
+        this.github.writeFile(this.repo.user.login, this.repo.name, ".reactor.yml", ".reactor.yml", "Added .reactor.yml config file", "language: nova\nmainClassLocation: " + this.repo.mainClassLocation.trim()).subscribe(response => {
             console.log("Wrote: ", response);
+            
+            this.repo.configStatus = "written";
         }, error => this.handleError({ response: error, type: "create-config" }));
     }
 }
