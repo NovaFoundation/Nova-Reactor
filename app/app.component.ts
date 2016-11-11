@@ -10,6 +10,7 @@ declare var hashParams: any;
 declare var handler: any;
 declare function getQueryString(hashParams: any): any;
 declare function updateHash();
+declare function readCookie(name: string): string;
 
 @Component({
   selector: 'my-app',
@@ -205,6 +206,9 @@ export class AppComponent {
             "width=780,height=410,toolbar=0,scrollbars=0,status=0,resizable=0,location=0,menuBar=0,left=" + pos.x + ",top=" + pos.y);
         
         signinWin.focus();
+        signinWin.onunload = function () {
+            console.log("coikei: ", readCookie("github_access_token"));
+        };
         
         /*this.github.writeFile(this.repo.user.login, this.repo.name, ".reactor.yml", ".reactor.yml", "Added .reactor.yml config file", "language: nova\nmainClassLocation: " + this.repo.mainClassLocation).subscribe(response => {
             console.log("Wrote: ", response);
