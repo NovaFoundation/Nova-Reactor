@@ -58,7 +58,7 @@ export class GithubService {
     }
     
     writeFile(username: string, repo: string, path: string, filename: string, commitMessage: string, contents: string) {
-        return this.authenticateGithubUser(observer => {
+        return this.observableAuthentication(observer => {
             this.http.put('https://api.github.com/repos/' + username + '/' + repo + '/contents/' + path, {
                 message: commitMessage,
                 content: b64EncodeUnicode(contents)
@@ -69,16 +69,20 @@ export class GithubService {
             }, e => observer.error(e));
         }, observer => {
             observer.error(new Error("skipped-authentication"));
-        });
+        }, "repo");
     }
     
-    authenticateGithubUser(success: any, failure: any) {
+    observableAuthentication(success: Function = observer => {}, failure: Function = observer => {}, scope: string = null) {
         return new Observable(observer => {
-            var pos = { x:200, y:200 };//screenCenterPos(800, 500);
+            var width = 400;
+            var height = 650;
             
-            var signinWin = window.open("https://github.com/login/oauth/authorize?scope=repo&client_id=c8720bb8f589d74d6ad4",
+            var pos = { x: window.screenX + window.innerWidth / 2 - width / 2, y: window.screenY + window.innerHeight / 2 - height / 2 };
+            var scopeParam = scope != null ? "scope=" + scope + "&" : "";
+            
+            var signinWin = window.open("https://github.com/login/oauth/authorize?" + scopeParam + "client_id=c8720bb8f589d74d6ad4",
                 "SignIn",
-                "width=780,height=410,toolbar=0,scrollbars=0,status=0,resizable=0,location=0,menuBar=0,left=" + pos.x + ",top=" + pos.y);
+                "width=" + width + ",height=" + height + ",toolbar=0,scrollbars=1,status=0,resizable=0,location=0,menuBar=0,left=" + pos.x + ",top=" + pos.y);
             
             signinWin.focus();
             
@@ -94,5 +98,10 @@ export class GithubService {
                 }
             }, 250);
         });
+    }
+    
+    authenticate(success: Function = () => {}, failure: Function = () => {}, scope: string = null) {
+        this.observableAuthentication(observer => success(), observer => failure(), scope)
+            .subscribe(value => {}, error => {});
     }
 }
