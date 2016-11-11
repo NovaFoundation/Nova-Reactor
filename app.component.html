@@ -11,7 +11,7 @@
         
         <input style="width: 520px;" type="text" placeholder="main class location, e.g. myproject/subfolder/Main.nova" [(ngModel)]="repo.mainClassLocation" (ngModelChange)="validateMainClassLocation($event)" [ngClass]="{ valid: validMainClassLocation(repo.mainClassLocation), invalid: invalidMainClassLocation(repo.mainClassLocation) }" />
         <button [ngClass]="{ invalid: !repo.validClassLocation }" (click)="repo.validClassLocation && authenticateGithub()">Confirm</button>
-        
+        <p *ngIf="repo.configError">Error creating config file</p>
     </div>
 
     <ng-content></ng-content>
