@@ -10,8 +10,22 @@ declare function b64EncodeUnicode(value: string): string;
 
 @Injectable()
 export class GithubService {
+    private static headers: Headers = new Headers({ 'Accept': 'application/json' });
+    
     constructor(private http: Http) {
+        this.updateHeaders();
+    }
+    
+    updateHeaders() {
+        var accessToken = readCookie('github_access_token');
         
+        if (accessToken != null) {
+            if (GithubService.headers.has('Authorization')) {
+                GithubService.headers.set('Authorization', 'token ' + accessToken);
+            } else {
+                GithubService.headers.append('Authorization', 'token ' + accessToken);
+            }
+        }
     }
     
     // u: any = {avatar_url: "https://avatars.githubusercontent.com/u/1524311?v=3",bio: "I reinvent wheels",blog: null,company: "Boeing",created_at: "2012-03-10T22:32:21Z",email: "BradenSteffaniak@gmail.com",events_url: "https://api.github.com/users/BSteffaniak/events{/privacy}",followers: 1,followers_url: "https://api.github.com/users/BSteffaniak/followers",following: 3,following_url: "https://api.github.com/users/BSteffaniak/following{/other_user}",gists_url: "https://api.github.com/users/BSteffaniak/gists{/gist_id}",gravatar_id: "",hireable: true,html_url: "https://github.com/BSteffaniak",id: 1524311,location: "United States",login: "BSteffaniak",name: "Braden Steffaniak",organizations_url: "https://api.github.com/users/BSteffaniak/orgs",public_gists: 0,public_repos: 23,received_events_url: "https://api.github.com/users/BSteffaniak/received_events",repos_url: "https://api.github.com/users/BSteffaniak/repos",site_admin: false,starred_url: "https://api.github.com/users/BSteffaniak/starred{/owner{/repo}",subscriptions_url: "https://api.github.com/users/BSteffaniak/subscriptions",type: "User",updated_at: "2016-11-08T00:40:19Z",url: "https://api.github.com/users/BSteffaniak"};
@@ -20,40 +34,35 @@ export class GithubService {
     // f: any = [{"name":".gitignore","path":".gitignore","sha":"1028a4f0346273628dd00779320ae890d1876dd5","size":104,"url":"https://api.github.com/repos/BSteffaniak/Nova/contents/.gitignore?ref=master","html_url":"https://github.com/BSteffaniak/Nova/blob/master/.gitignore","git_url":"https://api.github.com/repos/BSteffaniak/Nova/git/blobs/1028a4f0346273628dd00779320ae890d1876dd5","download_url":"https://raw.githubusercontent.com/BSteffaniak/Nova/master/.gitignore","type":"file","_links":{"self":"https://api.github.com/repos/BSteffaniak/Nova/contents/.gitignore?ref=master","git":"https://api.github.com/repos/BSteffaniak/Nova/git/blobs/1028a4f0346273628dd00779320ae890d1876dd5","html":"https://github.com/BSteffaniak/Nova/blob/master/.gitignore"}},{"name":"README.md","path":"README.md","sha":"a3150feb19189c00679623c204e0ab746f70da3c","size":3615,"url":"https://api.github.com/repos/BSteffaniak/Nova/contents/README.md?ref=master","html_url":"https://github.com/BSteffaniak/Nova/blob/master/README.md","git_url":"https://api.github.com/repos/BSteffaniak/Nova/git/blobs/a3150feb19189c00679623c204e0ab746f70da3c","download_url":"https://raw.githubusercontent.com/BSteffaniak/Nova/master/README.md","type":"file","_links":{"self":"https://api.github.com/repos/BSteffaniak/Nova/contents/README.md?ref=master","git":"https://api.github.com/repos/BSteffaniak/Nova/git/blobs/a3150feb19189c00679623c204e0ab746f70da3c","html":"https://github.com/BSteffaniak/Nova/blob/master/README.md"}},{"name":"src","path":"src","sha":"aba7e025ab0473a78d3cf968d55e89358a9b5898","size":0,"url":"https://api.github.com/repos/BSteffaniak/Nova/contents/src?ref=master","html_url":"https://github.com/BSteffaniak/Nova/tree/master/src","git_url":"https://api.github.com/repos/BSteffaniak/Nova/git/trees/aba7e025ab0473a78d3cf968d55e89358a9b5898","download_url":null,"type":"dir","_links":{"self":"https://api.github.com/repos/BSteffaniak/Nova/contents/src?ref=master","git":"https://api.github.com/repos/BSteffaniak/Nova/git/trees/aba7e025ab0473a78d3cf968d55e89358a9b5898","html":"https://github.com/BSteffaniak/Nova/tree/master/src"}}];
     
     getUser(username: string) {
-        return this.http.get('https://api.github.com/users/' + username).map(res => res.json()).catch(error => {
+        return this.http.get('https://api.github.com/users/' + username, new RequestOptions({ headers: GithubService.headers })).map(res => res.json()).catch(error => {
             return Observable.throw(error)
         });
     }
     
     getRepo(username: string, repo: string) {
-        return this.http.get('https://api.github.com/repos/' + username + '/' + repo).map(res => res.json()).catch(error => {
+        return this.http.get('https://api.github.com/repos/' + username + '/' + repo, new RequestOptions({ headers: GithubService.headers })).map(res => res.json()).catch(error => {
             return Observable.throw(error)
         });
     }
     
     getCommits(username: string, repo: string) {
-        return this.http.get('https://api.github.com/repos/' + username + '/' + repo + '/commits').map(res => res.json()).catch(error => {
+        return this.http.get('https://api.github.com/repos/' + username + '/' + repo + '/commits', new RequestOptions({ headers: GithubService.headers })).map(res => res.json()).catch(error => {
             return Observable.throw(error)
         });
     }
     
     getContents(username: string, repo: string, path: string = "/") {
-        return this.http.get('https://api.github.com/repos/' + username + '/' + repo + '/contents' + path).map(res => res.json()).catch(error => {
+        return this.http.get('https://api.github.com/repos/' + username + '/' + repo + '/contents' + path, new RequestOptions({ headers: GithubService.headers })).map(res => res.json()).catch(error => {
             return Observable.throw(error)
         });
     }
     
     writeFile(username: string, repo: string, path: string, filename: string, commitMessage: string, contents: string) {
         return this.requireAuthentication(observer => {
-            let headers = new Headers({ 'Accept': 'application/json' });
-            headers.append('Authorization', 'token ' + readCookie('github_access_token'));
-            
-            let options = new RequestOptions({ headers: headers });
-            
             this.http.put('https://api.github.com/repos/' + username + '/' + repo + '/contents/' + path, {
                 message: commitMessage,
                 content: b64EncodeUnicode(contents)
-            }, options).map(res => res.json()).catch(error => {
+            }, new RequestOptions({ headers: GithubService.headers })).map(res => res.json()).catch(error => {
                 return Observable.throw(error)
             }).subscribe(x => {
                 observer.next(x);
