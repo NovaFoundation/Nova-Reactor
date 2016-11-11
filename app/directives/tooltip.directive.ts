@@ -11,6 +11,7 @@ import { Directive, ElementRef, Input, OnInit } from '@angular/core';
 export class Tooltip implements OnInit {
     @Input() tooltip: string;
     @Input() position: string;
+    @Input('fade-delay') fadeDelay: number;
     @Input('horizontal-margin') horizontalMargin: number;
     @Input('vertical-margin') verticalMargin: number;
     @Input('tooltip-max-width') maxWidth: string;
@@ -22,6 +23,9 @@ export class Tooltip implements OnInit {
     
     static horizontalPositions: string[] = [ "left", "right" ];
     static verticalPositions: string[] = [ "top", "bottom" ];
+    
+    private timeoutRef: NodeJS.Timer;
+    private fadeTimeoutRef: NodeJS.Timer;
     
     constructor(private element: ElementRef) {}
     
@@ -45,6 +49,9 @@ export class Tooltip implements OnInit {
         }
         if (typeof this.verticalMargin === 'undefined') {
             this.verticalMargin = 5;
+        }
+        if (typeof this.fadeDelay === 'undefined') {
+            this.fadeDelay = 500;
         }
     }
     
@@ -81,14 +88,30 @@ export class Tooltip implements OnInit {
                 e.style.left = (x + this.element.nativeElement.offsetWidth + this.horizontalMargin) + "px";
             }
             
+            e.onmouseover = () => this.onMouseEnter();
+            e.onmouseout = () => this.onMouseExit();
+            
             this.tooltipElement = e;
         }
         
+        if (this.timeoutRef != null) {
+            clearTimeout(this.timeoutRef);
+        }
+        
         this.tooltipElement.classList.remove("hidden");
+        this.tooltipElement.style.pointerEvents = "auto";
     }
     
     onMouseExit() {
-        this.tooltipElement.classList.add("hidden");
+        this.timeoutRef = setTimeout(() => {
+            this.tooltipElement.classList.add("hidden");
+            
+            this.fadeTimeoutRef = setTimeout(() => {
+                this.tooltipElement.style.pointerEvents = "none";
+            }, 300);
+            
+            this.timeoutRef = null;
+        }, this.fadeDelay);
     }
     
     parsePositions(positions: string[]) {
