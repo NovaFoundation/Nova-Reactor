@@ -69,4 +69,12 @@ function eraseCookie(name) {
     createCookie(name,"",-1);
 }
 
-var handler = undefined;
+function b64EncodeUnicode(str) {
+    return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function(match, p1) {
+        return String.fromCharCode('0x' + p1);
+    }));
+}
+
+var handler = function () {
+    console.log("yooooooooooooooo");
+};
