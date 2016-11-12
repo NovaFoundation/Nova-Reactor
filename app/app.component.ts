@@ -206,11 +206,32 @@ export class AppComponent {
         this.waitingReply = false;
     }
     
-    authenticateGithub() {
-        this.github.writeFile(this.repo.user.login, this.repo.name, ".reactor.yml", ".reactor.yml", "Added .reactor.yml config file", "language: nova\nmainClassLocation: " + this.repo.mainClassLocation.trim()).subscribe(response => {
+    writeConfigFile() {
+        var location = this.repo.mainClassLocation.trim()
+        location = this.autoCompleteEnd(location, '.nova');
+        
+        this.github.writeFile(this.repo.user.login, this.repo.name, ".reactor.yml", ".reactor.yml", "Added .reactor.yml config file", "language: nova\nmainClassLocation: " + location).subscribe(response => {
             console.log("Wrote: ", response);
             
             this.repo.configStatus = "written";
         }, error => this.handleError({ response: error, type: "create-config" }));
+    }
+    
+    autoCompleteEnd(value: string, end: string) {
+        function endsWith(str, v) {
+            var i = str.indexOf(v);
+            
+            return i >= 0 && i == str.length - v.length;
+        }
+        
+        if (value) {
+            for (var i = end.length; i > 0; i--) {
+                if (endsWith(value, end.substring(0, i))) {
+                    return end.substring(i);
+                }
+            }
+        }
+        
+        return end;
     }
 }
