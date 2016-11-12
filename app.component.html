@@ -2,7 +2,7 @@
     <h1 id="header">NOVA REACTOR</h1>
     
     <input style="width: 475px;" type="text" placeholder="repo url, e.g. https://github.com/BSteffaniak/Nova" [url-validate]="repo.url.value" [validator-pattern]="repo.url.validPattern" [(ngModel)]="repo.url.value" (valid-url)="updateUrlComponents($event)" (valid-update)="updateRepoUrlValid($event)" (keyup)="$event.key == 'Enter' && searchRepo()" (ngModelChange)="urlUpdated($event)" />
-    <button class="invalid" [url-validate]="repo.url.value" [validator-pattern]="repo.url.validPattern" (click)="repo.url.valid && searchRepo()">Begin Analysis</button>
+    <button class="invalid" [url-validate]="repo.url.value" [validator-pattern]="repo.url.validPattern" (click)="repo.url.valid && searchRepo()">Search</button>
 
     <repo-results [repo]="repo" (onDataReceived)="repoDataReceived($event)" (onErrorReceived)="handleError($event)" (onConfigStatusReceived)="updateRequiresReactorConfig($event)"></repo-results>
 
@@ -11,12 +11,12 @@
         
         <div class="reactor-config-preview rounded">
             <span>language</span>: nova<br>
-            <span>mainClassLocation</span>: <span *ngIf="!repo.mainClassLocation" class="placeholder">myproject/subfolder/Main</span><span [textContent]="repo.mainClassLocation"></span><span *ngIf="!repo.mainClassLocation || repo.mainClassLocation.length < 5 || repo.mainClassLocation.indexOf('.nova') != repo.mainClassLocation.length - 5" [ngClass]="{ placeholder: repo.configStatus != 'written' }">.nova</span>
+            <span>mainClassLocation</span>: <span *ngIf="!repo.mainClassLocation" class="placeholder">myproject/subfolder/Main</span><span [textContent]="repo.mainClassLocation"></span><span [ngClass]="{ placeholder: repo.configStatus != 'written' }" [textContent]="autoCompleteEnd(repo.mainClassLocation, '.nova')"></span>
         </div>
         
         <div *ngIf="repo.configStatus == 'requires'">
             <input style="width: 520px;" type="text" placeholder="main class location, e.g. myproject/subfolder/Main.nova" [(ngModel)]="repo.mainClassLocation" (ngModelChange)="validateMainClassLocation($event)" [ngClass]="{ valid: validMainClassLocation(repo.mainClassLocation), invalid: invalidMainClassLocation(repo.mainClassLocation) }" />
-            <button [ngClass]="{ invalid: !repo.validClassLocation }" (click)="repo.validClassLocation && authenticateGithub()">Confirm</button>
+            <button [ngClass]="{ invalid: !repo.validClassLocation }" (click)="repo.validClassLocation && writeConfigFile()">Confirm</button>
             <p *ngIf="repo.configError">Error creating config file</p>
         </div>
         <div *ngIf="repo.configStatus == 'written'">
