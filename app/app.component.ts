@@ -243,12 +243,12 @@ export class AppComponent {
     
     private setLoggedInInfo() {
         this.github.getAuthenticatedUserInfo().subscribe(data => {
-            console.log("Logged in as ", data);
-            
-            this.loggedInUser.data = {
+            this.loggedInUser = {
                 name: data.name || data.login,
                 data: data
             }
+            
+            console.log("Logged in as ", this.loggedInUser);
         }, error => {
             console.log("Unable to login: " + error.status + " (" + error.statusText + ")");
             
