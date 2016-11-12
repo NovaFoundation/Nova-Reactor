@@ -10,13 +10,14 @@ import { AppComponent }  from './app.component';
 import { GithubUser } from './githubUser.component';
 import { GithubRepo } from './githubRepo.component';
 import { RepoResults } from './components/repoResults.component';
+import { CollapseSection } from './components/collapseSection.component';
 // import { routing } from './app.routes';
 import { UrlValidator } from './urlValidator.directive';
 import { Tooltip } from './directives/tooltip.directive';
 
 @NgModule({
   imports:      [ BrowserModule, FormsModule, HttpModule, ChartsModule ],
-  declarations: [ AppComponent, UrlValidator, GithubUser, GithubRepo, RepoResults, Tooltip ],
+  declarations: [ AppComponent, UrlValidator, GithubUser, GithubRepo, RepoResults, Tooltip, CollapseSection ],
   bootstrap:    [ AppComponent ]
 })
 

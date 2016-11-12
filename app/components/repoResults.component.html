@@ -1,6 +1,5 @@
-<div class="repo-results">
-    <div class="repo-container" [ngClass]="{ 'loading-new': repo.searching && repo.data, 'closed': !repo.searching && !repo.username && !repo.data, 'searching': repo.data && repo.searching, 'invalid-username': repo.invalidUsername, 'invalid-repo-name': !repo.invalidUsername && repo.invalidName, 'rate-limit-exceeded': repo.rateLimitResetTimeMessage }">
-        <hr />
+<div class="repo-container" [ngClass]="{ 'loading-new': repo.searching && repo.data, 'searching': repo.data && repo.searching, 'invalid-username': repo.invalidUsername, 'invalid-repo-name': !repo.invalidUsername && repo.invalidName, 'rate-limit-exceeded': repo.rateLimitResetTimeMessage }">
+    <collapse-section [closed]="!repo.searching && !repo.username && !repo.data">
         <div *ngIf="repo.username" class="repo-info">
             <table>
                 <tr>
@@ -19,6 +18,5 @@
             <p class="repo-overlay-text invalid-username">Invalid username '{{ repo.username }}'</p>
         </div>
         <p class="repo-overlay-text rate-limit-exceeded">Github API request rate-limit has been exceeded. Try again in {{ repo.rateLimitResetTimeMessage }}</p>
-    </div>
-    <hr />
+    </collapse-section>
 </div>
