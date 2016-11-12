@@ -64,8 +64,8 @@ export class AppComponent {
             }
         }
         
-        github.addLoginListener(this.setLoggedInInfo);
-        github.addLogoutListener(this.logout);
+        github.addLoginListener(() => this.setLoggedInInfo());
+        github.addLogoutListener(() => this.logout());
         
         if (readCookie("github_access_token") != null) {
             this.setLoggedInInfo();
