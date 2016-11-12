@@ -243,6 +243,8 @@ export class AppComponent {
     
     private setLoggedInInfo() {
         this.github.getAuthenticatedUserInfo().subscribe(data => {
+            console.log("Logged in as ", data);
+            
             this.loggedInUser.data = {
                 name: data.name || data.login,
                 data: data
