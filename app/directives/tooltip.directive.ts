@@ -56,50 +56,58 @@ export class Tooltip implements OnInit {
     }
     
     onMouseEnter() {
-        var x = this.element.nativeElement.offsetLeft;
-        var y = this.element.nativeElement.offsetTop;
-        
         if (!this.tooltipElement) {
             var e = document.createElement("div");
             
             e.className += " tooltip hidden";
             e.innerHTML = this.tooltip;
-            e.style.left = x + "px";
-            e.style.top = y + "px";
-            
-            if (this.maxWidth) {
-                e.style.maxWidth = this.maxWidth;
-            }
-            
-            document.body.appendChild(e);
-            
-            if (this.verticalPosition == "top") {
-                e.style.top = (y - e.offsetHeight - this.verticalMargin) + "px";
-            } else if (this.verticalPosition == "middle") {
-                e.style.top = (y + this.element.nativeElement.offsetHeight / 2 - e.offsetHeight / 2) + "px";
-            } else if (this.verticalPosition == "bottom") {
-                e.style.top = (y + this.element.nativeElement.offsetHeight + this.verticalMargin) + "px";
-            }
-            if (this.horizontalPosition == "left") {
-                e.style.left = (x - e.offsetWidth - this.horizontalMargin) + "px";
-            } else if (this.horizontalPosition == "center") {
-                e.style.left = (x + this.element.nativeElement.offsetWidth / 2 - e.offsetWidth / 2) + "px";
-            } else if (this.horizontalPosition == "right") {
-                e.style.left = (x + this.element.nativeElement.offsetWidth + this.horizontalMargin) + "px";
-            }
             
             e.onmouseover = () => this.onMouseEnter();
             e.onmouseout = () => this.onMouseExit();
             
             this.tooltipElement = e;
+            
+            document.body.appendChild(e);
         }
         
         if (this.timeoutRef != null) {
             clearTimeout(this.timeoutRef);
         }
         
+        this.updateTooltipPosition();
+        
         this.tooltipElement.classList.remove("hidden");
         this.tooltipElement.style.pointerEvents = "auto";
+    }
+    
+    updateTooltipPosition() {
+        var e = this.tooltipElement;
+        
+        var dimensions = this.element.nativeElement.getBoundingClientRect();
+        var x = dimensions.left;
+        var y = dimensions.top;
+        
+        e.style.left = x + "px";
+        e.style.top = y + "px";
+        
+        if (this.maxWidth) {
+            e.style.maxWidth = this.maxWidth;
+        }
+        
+        if (this.verticalPosition == "top") {
+            e.style.top = (y - e.offsetHeight - this.verticalMargin) + "px";
+        } else if (this.verticalPosition == "middle") {
+            e.style.top = (y + this.element.nativeElement.offsetHeight / 2 - e.offsetHeight / 2) + "px";
+        } else if (this.verticalPosition == "bottom") {
+            e.style.top = (y + this.element.nativeElement.offsetHeight + this.verticalMargin) + "px";
+        }
+        if (this.horizontalPosition == "left") {
+            e.style.left = (x - e.offsetWidth - this.horizontalMargin) + "px";
+        } else if (this.horizontalPosition == "center") {
+            e.style.left = (x + this.element.nativeElement.offsetWidth / 2 - e.offsetWidth / 2) + "px";
+        } else if (this.horizontalPosition == "right") {
+            e.style.left = (x + this.element.nativeElement.offsetWidth + this.horizontalMargin) + "px";
+        }
     }
     
     onMouseExit() {
