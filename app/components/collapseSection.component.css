@@ -1,0 +1,66 @@
+div.collapse-container {
+    overflow: hidden;
+}
+
+div.collapse-container {
+    margin-top: 0;
+    
+    padding-bottom: 30px;
+    margin-bottom: -30px;
+}
+
+div.collapse-container,
+div.collapse-section {
+    min-height: 0px;
+    
+    -webkit-transition: 1s ease all;
+    transition: 1s ease all;
+    -webkit-transition-property: min-height, max-height;
+    transition-property: min-height, max-height;
+}
+
+div.collapse-container.closed {
+    max-height: 0px;
+}
+
+div.collapse-container hr:first-child {
+    margin-bottom: 50px;
+}
+
+hr {
+    border: 1.5px solid #444;
+    
+    margin: 30px 0;
+}
+
+hr:after {
+    content: ' ';
+    width: 10px;
+    height: 10px;
+    background-color: #444;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%,-50%)rotateZ(45deg);
+}
+
+div.collapse-section {
+    padding-top: 20px;
+    
+    margin-bottom: -83px;
+    
+    overflow: hidden;
+    
+    position: relative;
+}
+
+div.collapse-content {
+    margin-top: -20px;
+}
+
+collapse-section {
+    display: block;
+}
+
+collapse-section[end] {
+    margin-bottom: 83px;
+}

@@ -14,6 +14,8 @@ a {
 	color: #444;
 	
 	text-decoration: none;
+	
+	cursor: pointer;
 }
 
 .info-icon {
@@ -65,6 +67,8 @@ div.tooltip.hidden {
 .container {
 	max-width: 850px;
 	margin: auto;
+	
+	position: relative;
 }
 
 .light-gray {
@@ -74,27 +78,6 @@ div.tooltip.hidden {
 div.repo-info, div.collapse-container {
 	max-height: 400px;
 	overflow: hidden;
-}
-
-div.collapse-container {
-	margin-top: 0;
-	
-	padding-bottom: 30px;
-	margin-bottom: -30px;
-}
-
-div.collapse-container,
-div.collapse-section {
-	min-height: 0px;
-	
-	-webkit-transition: 1s ease all;
-	transition: 1s ease all;
-    -webkit-transition-property: min-height, max-height;
-    transition-property: min-height, max-height;
-}
-
-div.collapse-container.closed {
-	max-height: 0px;
 }
 
 div.repo-container.loading-new div.collapse-container {
@@ -108,26 +91,6 @@ div.repo-container.loading-new div.collapse-container {
 div.repo-container.rate-limit-exceeded,
 div.repo-container.invalid-repo-name {
 	min-height: 120px;
-}
-
-div.collapse-container hr:first-child {
-	margin-bottom: 50px;
-}
-
-hr {
-	border: 1.5px solid #444;
-	
-	margin: 30px 0;
-}
-
-hr:after {
-	content: ' ';
-    width: 10px;
-    height: 10px;
-    background-color: #444;
-    position: absolute;
-    left: 50%;
-    transform: translate(-50%,-50%)rotateZ(45deg);
 }
 
 #splashscreen {
@@ -144,20 +107,6 @@ hr:after {
 
 #header {
 	font-size: 72px;
-}
-
-div.collapse-section {
-	padding-top: 20px;
-	
-	margin-bottom: -82px;
-	
-	overflow: hidden;
-	
-	position: relative;
-}
-
-div.collapse-content {
-	margin-top: -20px;
 }
 
 div.repo-info {
@@ -356,4 +305,15 @@ input {
 button {
     -webkit-transition-property: color;
     transition-property: color;
+}
+
+.user-info {
+	text-align: right;
+	
+	position: relative;
+	bottom: 12px;
+}
+
+.user-info a {
+	color: #aaa;
 }
