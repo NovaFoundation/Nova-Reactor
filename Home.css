@@ -325,3 +325,23 @@ button {
 .user-info a {
 	color: #aaa;
 }
+
+div.collapse-content > h1:first-child,
+div.collapse-content > h2:first-child,
+div.collapse-content > h3:first-child,
+div.collapse-content > h4:first-child,
+div.collapse-content > h5:first-child,
+div.collapse-content > h6:first-child,
+div.collapse-content > p:first-child {
+	margin-top: 0;
+}
+
+div.collapse-content > h1:last-child,
+div.collapse-content > h2:last-child,
+div.collapse-content > h3:last-child,
+div.collapse-content > h4:last-child,
+div.collapse-content > h5:last-child,
+div.collapse-content > h6:last-child,
+div.collapse-content > p:last-child {
+	margin-bottom: 0;
+}
