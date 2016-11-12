@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Output, EventEmitter } from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
@@ -10,6 +10,9 @@ declare function b64EncodeUnicode(value: string): string;
 
 @Injectable()
 export class GithubService {
+    @Output('onLogin') loginEmitter: EventEmitter<any> = new EventEmitter();
+    @Output('onLogout') logoutEmitter: EventEmitter<any> = new EventEmitter();
+    
     private static headers: Headers = new Headers({ 'Accept': 'application/json' });
     
     constructor(private http: Http) {
@@ -92,16 +95,34 @@ export class GithubService {
                     
                     if (readCookie("github_access_token") != null) {
                         success(observer);
+                        
+                        this.loginEmitter.emit();
                     } else {
                         failure(observer);
+                        
+                        this.logoutEmitter.emit();
                     }
                 }
             }, 250);
         });
     }
     
+    addLoginListener(listener: Function) {
+        this.loginEmitter.subscribe(listener);
+    }
+    
+    addLogoutListener(listener: Function) {
+        this.logoutEmitter.subscribe(listener);
+    }
+    
     authenticate(success: Function = () => {}, failure: Function = () => {}, scope: string = null) {
         this.observableAuthentication(observer => success(), observer => failure(), scope)
             .subscribe(value => {}, error => {});
+    }
+    
+    getAuthenticatedUserInfo(): Observable<any> {
+        return this.http.get('https://api.github.com/user', new RequestOptions({ headers: GithubService.headers })).map(res => res.json()).catch(error => {
+            return Observable.throw(error)
+        });
     }
 }
