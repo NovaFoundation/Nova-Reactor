@@ -7,10 +7,10 @@ import { Patterns } from './Patterns';
 import { RepoResults } from './components/repoResults.component';
 
 declare var hashParams: any;
-declare var handler: any;
 declare function getQueryString(hashParams: any): any;
 declare function updateHash();
 declare function readCookie(name: string): string;
+declare function eraseCookie(name: string);
 
 @Component({
   selector: 'my-app',
@@ -43,13 +43,14 @@ export class AppComponent {
         rateLimitResetTimeMessage: undefined
     };
     
+    loggedInUser = {
+        name: undefined,
+        data: undefined
+    };
+    
     waitingReply: boolean = false;
     loggedIn: boolean = readCookie('github_access_token') != null;
     go: boolean = hashParams && hashParams.go == "true";
-    
-    myApiHandler() {
-        console.log("being handled...");
-    }
     
     constructor(private oauth: OAuthService, private github: GithubService) {
         if (hashParams) {
@@ -63,7 +64,12 @@ export class AppComponent {
             }
         }
         
-        handler = this.myApiHandler;
+        github.addLoginListener(this.setLoggedInInfo);
+        github.addLogoutListener(this.logout);
+        
+        if (readCookie("github_access_token") != null) {
+            this.setLoggedInInfo();
+        }
     }
     
     searchRepo() {
@@ -233,5 +239,29 @@ export class AppComponent {
         }
         
         return end;
+    }
+    
+    private setLoggedInInfo() {
+        this.github.getAuthenticatedUserInfo().subscribe(data => {
+            this.loggedInUser.data = {
+                name: data.name || data.login,
+                data: data
+            }
+        }, error => {
+            console.log("Unable to login: " + error.status + " (" + error.statusText + ")");
+            
+            this.logout();
+        });
+    }
+    
+    logout() {
+        eraseCookie("github_access_token");
+        
+        this.loggedInUser = {
+            name: undefined,
+            data: undefined
+        };
+        
+        this.github.updateHeaders();
     }
 }
