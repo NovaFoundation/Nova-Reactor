@@ -74,7 +74,3 @@ function b64EncodeUnicode(str) {
         return String.fromCharCode('0x' + p1);
     }));
 }
-
-var handler = function () {
-    console.log("yooooooooooooooo");
-};
