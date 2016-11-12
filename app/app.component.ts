@@ -208,7 +208,7 @@ export class AppComponent {
     
     writeConfigFile() {
         var location = this.repo.mainClassLocation.trim()
-        location = this.autoCompleteEnd(location, '.nova');
+        location += this.autoCompleteEnd(location, '.nova');
         
         this.github.writeFile(this.repo.user.login, this.repo.name, ".reactor.yml", ".reactor.yml", "Added .reactor.yml config file", "language: nova\nmainClassLocation: " + location).subscribe(response => {
             console.log("Wrote: ", response);
