@@ -23,7 +23,8 @@
             <p>Successfully wrote <span class="light-gray">.reactor.yml</span> file to the repo.</p>
         </div>
     </collapse-section>
-    <collapse-section [closed]="!repo.configStatus || repo.configStatus == 'requires'" [openDelay]="400">
+    <collapse-section end [closed]="!repo.configStatus || repo.configStatus == 'requires'" [openDelay]="400">
         next steps...
     </collapse-section>
+    <p *ngIf="loggedInUser.data" class="user-info"><span class="username" [textContent]="loggedInUser.name"></span> <a (click)="logout()">Logout</a></p>
 </div>
