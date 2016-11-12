@@ -71,20 +71,20 @@ div.tooltip.hidden {
 	color: #aaa;
 }
 
-div.repo-info, div.repo-container {
+div.repo-info, div.collapse-container {
 	max-height: 400px;
 	overflow: hidden;
 }
 
-div.repo-container {
+div.collapse-container {
 	margin-top: 0;
 	
 	padding-bottom: 30px;
 	margin-bottom: -30px;
 }
 
-div.repo-container,
-div.repo-info {
+div.collapse-container,
+div.collapse-section {
 	min-height: 0px;
 	
 	-webkit-transition: 1s ease all;
@@ -93,17 +93,25 @@ div.repo-info {
     transition-property: min-height, max-height;
 }
 
-div.repo-container.closed {
+div.collapse-container.closed {
 	max-height: 0px;
 }
 
-div.repo-container.loading-new {
+div.repo-container.loading-new div.collapse-container {
 	max-height: 100px;
 }
+
+/*div.repo-container {
+	margin-top: 20px;
+}*/
 
 div.repo-container.rate-limit-exceeded,
 div.repo-container.invalid-repo-name {
 	min-height: 120px;
+}
+
+div.collapse-container hr:first-child {
+	margin-bottom: 50px;
 }
 
 hr {
@@ -138,12 +146,18 @@ hr:after {
 	font-size: 72px;
 }
 
-div.repo-results {
+div.collapse-section {
 	padding-top: 20px;
+	
+	margin-bottom: -82px;
 	
 	overflow: hidden;
 	
 	position: relative;
+}
+
+div.collapse-content {
+	margin-top: -20px;
 }
 
 div.repo-info {
@@ -212,6 +226,8 @@ div.repo-container.invalid-username div.repo-info,
 div.repo-container.invalid-repo-name div.repo-info,
 div.repo-container.rate-limit-exceeded div.repo-info {
 	opacity: 0.2;
+	
+	pointer-events: none;
 }
 
 div.reactor-config-preview {
