@@ -26,5 +26,5 @@
     <collapse-section end [closed]="!repo.configStatus || ['written', 'exists'].indexOf(repo.configStatus) < 0" [openDelay]="400">
         next steps...
     </collapse-section>
-    <p *ngIf="loggedInUser.data" class="user-info"><a href="loggedInUser.url" class="username" [textContent]="loggedInUser.name"></a> <a class="logout" (click)="logout()">Logout</a></p>
+    <p *ngIf="loggedInUser.data" class="user-info"><a [href]="loggedInUser.url" class="username" [textContent]="loggedInUser.name"></a> <a class="logout" (click)="logout()">Logout</a></p>
 </div>
