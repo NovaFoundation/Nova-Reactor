@@ -44,8 +44,8 @@ export class RepoStats implements OnChanges, OnInit {
     
     barChartLabels: string[] = ['C', 'Java'];
     barChartColors: any[] = [{
-        backgroundColor: 'rgba(134,199,243,0.5)',
-        borderColor: 'rgba(134,199,243,1)'
+        backgroundColor: 'rgba(241,93,59,0.5)',
+        borderColor: 'rgba(241,93,59,1)'
     }];
     barChartType: string = 'bar';
     barChartLegend: boolean = true;
