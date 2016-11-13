@@ -1,10 +1,12 @@
-import { Component, EventEmitter, Input, Output, OnChanges } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnChanges, ViewEncapsulation } from '@angular/core';
 import { GithubService } from './services/github.service';
 
 @Component({
     moduleId: module.id,
     selector: 'github-repo',
-    templateUrl: 'githubRepo.component.html'
+    templateUrl: 'githubRepo.component.html',
+    styles: ["github-repo { display: block; }"],
+    encapsulation: ViewEncapsulation.None
 })
 
 export class GithubRepo implements OnChanges {

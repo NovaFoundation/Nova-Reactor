@@ -136,6 +136,8 @@ div.repo-container.loading-new div.repo-info {
 div.github-repo {
 	display: inline-block;
 	
+	min-width: 80%;
+	
 	text-align: right;
 }
 
@@ -214,6 +216,8 @@ div.repo-info.searching {
 .repo-info table {
 	width: 100%;
 	margin: auto;
+	
+	table-layout: fixed;
 }
 
 .repo-info td {
