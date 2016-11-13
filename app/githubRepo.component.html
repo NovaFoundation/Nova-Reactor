@@ -6,6 +6,7 @@
             <div *ngFor="let c of commits" class="commit">
                 <a [href]="c.html_url" target="_blank" [title]="c.commit.message" [textContent]="c.commit.message"></a>
             </div>
+            <span class="light-gray" *ngIf="!commits">No commits.</span>
         </div>
     </div>
 </div>
