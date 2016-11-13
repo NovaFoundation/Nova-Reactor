@@ -13,7 +13,9 @@ export class GithubRepo implements OnChanges {
     @Input() repo: string;
     @Input() username: string;
     @Output('onRepoUpdated') onRepoUpdated: EventEmitter<any> = new EventEmitter();
-    @Output('onReactorConfigStatus') onReactorConfigStatus: EventEmitter<any> = new EventEmitter();
+    @Output('onCommitsUpdated') onCommitsUpdated: EventEmitter<any[]> = new EventEmitter();
+    // @Output('onContentUpdated') onContentUpdated: EventEmitter<any[]> = new EventEmitter();
+    @Output('onReactorConfigStatus') onReactorConfigStatus: EventEmitter<string> = new EventEmitter();
     @Output('onError') onError: EventEmitter<any> = new EventEmitter();
     
     model: any;
@@ -45,6 +47,9 @@ export class GithubRepo implements OnChanges {
                     this.github.getCommits(this.username, this.repo).subscribe(commits => {
                         this.commits = commits.slice(0, Math.min(10, commits.length));
                         
+                        this.onCommitsUpdated.emit(commits);
+                        // this.onContentUpdated.emit(commits);
+                        
                         console.log("Received repo commits ", commits);
                     }, error => this.handleError(error));
                     
@@ -64,6 +69,7 @@ export class GithubRepo implements OnChanges {
                 }
                 
                 this.onRepoUpdated.emit(repo);
+                // this.onContentUpdated.emit(repo);
             }, error => this.handleError(error));
         }
     }
