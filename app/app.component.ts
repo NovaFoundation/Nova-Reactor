@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnChanges, SimpleChanges, DoCheck, KeyValueDiffer, KeyValueDiffers } from '@angular/core';
 
 import { OAuthService } from 'angular2-oauth2/oauth-service';
 
@@ -18,7 +18,7 @@ declare function eraseCookie(name: string);
   providers: [GithubService, OAuthService]
 })
 
-export class AppComponent {
+export class AppComponent implements OnChanges, DoCheck {
     repo = {
         url: {
             value: undefined,
@@ -45,22 +45,21 @@ export class AppComponent {
     
     loggedInUser = {
         name: undefined,
+        url: undefined,
         data: undefined
     };
     
+    hashParams: any = hashParams;
     waitingReply: boolean = false;
     loggedIn: boolean = readCookie('github_access_token') != null;
-    go: boolean = hashParams && hashParams.go == "true";
+    go: boolean = this.hashParams && this.hashParams.go == "true";
     
-    constructor(private oauth: OAuthService, private github: GithubService) {
-        if (hashParams) {
-            if (hashParams.url) {
-                this.repo.url.value = hashParams.url;
-            }
-            if (hashParams.go) {
-                // hashParams.go = undefined;
-                
-                updateHash();
+    private differ: KeyValueDiffer;
+    
+    constructor(private differs: KeyValueDiffers, private oauth: OAuthService, private github: GithubService) {
+        if (this.hashParams) {
+            if (this.hashParams.url) {
+                this.repo.url.value = this.hashParams.url;
             }
         }
         
@@ -70,9 +69,25 @@ export class AppComponent {
         if (readCookie("github_access_token") != null) {
             this.setLoggedInInfo();
         }
+        
+        this.differ = differs.find({}).create(null);
+    }
+    
+    ngOnChanges(changes: SimpleChanges) {
+        console.log(changes);
+    }
+    
+    ngDoCheck() {
+        var changes = this.differ.diff(hashParams);
+        
+        if (changes) {
+            updateHash();
+        }
     }
     
     searchRepo() {
+        this.hashParams.go = true;
+        
         if (this.repo.url.value != this.repo.url.previousValue) {
             this.repo.searching = true;
             this.repo.invalidName = false;
@@ -121,7 +136,6 @@ export class AppComponent {
                 this.repo.host = this.repo.host.substring(4);
             }
             
-            this.updateRequiresReactorConfig(false);
             this.waitingReply = true;
         }
     }
@@ -163,16 +177,16 @@ export class AppComponent {
     
     urlUpdated(url: string) {
         if (url) {
-            hashParams.url = url;
+            this.hashParams.url = url;
         } else {
-            hashParams.url = undefined;
+            this.hashParams.url = undefined;
         }
-        
-        updateHash();
     }
     
-    updateRequiresReactorConfig(requires: boolean) {
-        this.repo.configStatus = requires ? "requires" : "exists";
+    updateReactorConfigStatus(status: string) {
+        console.log("Received reactor config status \"" + status + "\"");
+        
+        this.repo.configStatus = status;
     }
     
     validateMainClassLocation(location: string) {
@@ -197,7 +211,9 @@ export class AppComponent {
         } else {
             switch (type) {
                 case "GithubRepo":
-                    this.repo.invalidName = true;
+                    if (error.sender.model == null) {
+                        this.repo.invalidName = true;
+                    }
                     break;
                 case "GithubUser":
                     this.repo.invalidUsername = true;
@@ -245,8 +261,9 @@ export class AppComponent {
         this.github.getAuthenticatedUserInfo().subscribe(data => {
             this.loggedInUser = {
                 name: data.name || data.login,
+                url: data.html_url,
                 data: data
-            }
+            };
             
             console.log("Logged in as ", this.loggedInUser);
         }, error => {
@@ -261,6 +278,7 @@ export class AppComponent {
         
         this.loggedInUser = {
             name: undefined,
+            url: undefined,
             data: undefined
         };
         
