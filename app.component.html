@@ -23,8 +23,8 @@
             <p>Successfully wrote <span class="light-gray">.reactor.yml</span> file to the repo.</p>
         </div>
     </collapse-section>
-    <collapse-section end [closed]="!repo.configStatus || ['written', 'exists'].indexOf(repo.configStatus) < 0" [openDelay]="400">
-        next steps...
+    <collapse-section id="repo-stats-section" end [closed]="!repo.configStatus || ['written', 'exists'].indexOf(repo.configStatus) < 0" [openDelay]="400">
+        <repo-stats *ngIf="repo.data" [repo]="repo.data" [host]="repo.host"></repo-stats>
     </collapse-section>
     <p *ngIf="loggedInUser.data" class="user-info"><a [href]="loggedInUser.url" target="_blank" class="username" [textContent]="loggedInUser.name"></a> <a class="logout" (click)="logout()">Logout</a></p>
 </div>
