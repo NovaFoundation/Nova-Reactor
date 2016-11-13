@@ -326,7 +326,7 @@ button {
 	text-align: right;
 }
 
-.user-info a {
+.user-info a.logout {
 	color: #aaa;
 }
 
