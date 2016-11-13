@@ -3,6 +3,7 @@ import { Component, OnChanges, SimpleChanges, DoCheck, KeyValueDiffer, KeyValueD
 import { OAuthService } from 'angular2-oauth2/oauth-service';
 
 import { GithubService } from './services/github.service';
+import { ReactorCoreService } from './services/reactorCore.service';
 import { Patterns } from './Patterns';
 import { RepoResults } from './components/repoResults.component';
 
@@ -15,7 +16,7 @@ declare function eraseCookie(name: string);
 @Component({
   selector: 'my-app',
   templateUrl: 'app.component.html',
-  providers: [GithubService, OAuthService]
+  providers: [GithubService, ReactorCoreService, OAuthService]
 })
 
 export class AppComponent implements OnChanges, DoCheck {
