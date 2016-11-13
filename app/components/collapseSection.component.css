@@ -2,9 +2,6 @@ div.collapse-container {
     overflow: hidden;
     margin-top: 0;
     position: relative;
-    
-    /*padding-bottom: 30px;
-    margin-bottom: -30px;*/
 }
 
 div.collapse-container,
@@ -21,15 +18,7 @@ div.collapse-container.closed {
     max-height: 0px;
 }
 
-div.collapse-container hr:first-child {
-    /*margin-bottom: 50px;*/
-}
-
 hr {
-    /*border: 1.5px solid #444;
-    
-    margin: -3px;*/
-    
     margin: 0;
     border: none;
     
@@ -49,22 +38,12 @@ hr:after {
     transform: translateY(1.5px)translate(-50%,-50%)rotateZ(45deg);
 }
 
-div.collapse-section {
-    /*margin-bottom: -63px;
-    
-    overflow: hidden;
-    
-    position: relative;*/
-}
-
 div.collapse-content {
     padding: 30px 0;
 }
 
 collapse-section {
     display: block;
-    
-    /*margin: 10px 0;*/
 }
 
 collapse-section[end] {
