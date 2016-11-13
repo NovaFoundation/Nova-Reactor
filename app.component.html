@@ -4,7 +4,7 @@
     <input style="width: 475px;" type="text" placeholder="repo url, e.g. https://github.com/BSteffaniak/Nova" [url-validate]="repo.url.value" [validator-pattern]="repo.url.validPattern" [(ngModel)]="repo.url.value" (valid-url)="updateUrlComponents($event)" (valid-update)="updateRepoUrlValid($event)" (keyup)="$event.key == 'Enter' && searchRepo()" (ngModelChange)="urlUpdated($event)" />
     <button class="invalid" [url-validate]="repo.url.value" [validator-pattern]="repo.url.validPattern" (click)="repo.url.valid && searchRepo()">Search</button>
 
-    <repo-results [repo]="repo" (onDataReceived)="repoDataReceived($event)" (onErrorReceived)="handleError($event)" (onConfigStatusReceived)="updateRequiresReactorConfig($event)"></repo-results>
+    <repo-results [repo]="repo" (onDataReceived)="repoDataReceived($event)" (onErrorReceived)="handleError($event)" (onConfigStatusReceived)="updateReactorConfigStatus($event)"></repo-results>
 
     <collapse-section [closed]="!repo.configStatus || repo.configStatus == 'exists'" [openDelay]="400">
         <h3>This repository requires a <span tooltip="<span class='light-gray'>.reactor.yml</span> is a configuration file that you put in the root folder of your project, similar to a .travis.yml file, that contains metadata on how to build the project." tooltip-max-width="400px"><span class="light-gray">.reactor.yml</span><img src="/Shared/Images/info.svg" class="info-icon" /></span> config file to be set up before continuing</h3>
@@ -23,8 +23,8 @@
             <p>Successfully wrote <span class="light-gray">.reactor.yml</span> file to the repo.</p>
         </div>
     </collapse-section>
-    <collapse-section end [closed]="!repo.configStatus || repo.configStatus == 'requires'" [openDelay]="400">
+    <collapse-section end [closed]="!repo.configStatus || ['written', 'exists'].indexOf(repo.configStatus) < 0" [openDelay]="400">
         next steps...
     </collapse-section>
-    <p *ngIf="loggedInUser.data" class="user-info"><span class="username" [textContent]="loggedInUser.name"></span> <a (click)="logout()">Logout</a></p>
+    <p *ngIf="loggedInUser.data" class="user-info"><a href="loggedInUser.url" class="username" [textContent]="loggedInUser.name"></a> <a (click)="logout()">Logout</a></p>
 </div>
