@@ -86,18 +86,17 @@ repo-results {
 	margin-top: 50px;
 }
 
-div.repo-info, div.collapse-container {
+div.collapse-container {
 	max-height: 400px;
-	overflow: hidden;
+}
+
+#repo-stats-section div.collapse-container:not(.closed) {
+	max-height: 1000px;
 }
 
 div.repo-container.loading-new div.collapse-container {
 	max-height: 100px;
 }
-
-/*div.repo-container {
-	margin-top: 20px;
-}*/
 
 div.repo-container.rate-limit-exceeded,
 div.repo-container.invalid-repo-name {
