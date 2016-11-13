@@ -7,7 +7,7 @@
                         <github-user [username]="repo.username" (user-updated)="dataReceived($event, 'user')" (error)="handleError($event)"></github-user>
                     </td>
                     <td>
-                        <github-repo [username]="repo.username" [repo]="repo.name" (repo-updated)="dataReceived($event, 'repo')" (requires-reactor-config)="configStatusReceived($event)" (error)="handleError($event)"></github-repo>
+                        <github-repo [username]="repo.username" [repo]="repo.name" (onRepoUpdated)="dataReceived($event, 'repo')" (onReactorConfigStatus)="configStatusReceived($event)" (onError)="handleError($event)"></github-repo>
                     </td>
                 </tr>
             </table>
