@@ -12,6 +12,7 @@ declare function getQueryString(hashParams: any): any;
 declare function updateHash();
 declare function readCookie(name: string): string;
 declare function eraseCookie(name: string);
+declare function autoCompleteEnd(value: string, end: string);
 
 @Component({
   selector: 'my-app',
@@ -141,14 +142,6 @@ export class AppComponent implements OnChanges, DoCheck {
         }
     }
     
-    validMainClassLocation(location: string) {
-        return location && location.length > 0;
-    }
-    
-    invalidMainClassLocation(location: string) {
-        return typeof location === 'string' && !this.validMainClassLocation(location);
-    }
-    
     updateUrlComponents(url: string) {
         this.repo.url.value = url;
     }
@@ -190,10 +183,6 @@ export class AppComponent implements OnChanges, DoCheck {
         this.repo.configStatus = status;
     }
     
-    validateMainClassLocation(location: string) {
-        this.repo.validClassLocation = this.validMainClassLocation(location);
-    }
-    
     handleError(error: any) {
         var type = error.sender ? error.sender.constructor.name : error.type;
         
@@ -227,35 +216,6 @@ export class AppComponent implements OnChanges, DoCheck {
         
         this.repo.searching = false;
         this.waitingReply = false;
-    }
-    
-    writeConfigFile() {
-        var location = this.repo.mainClassLocation.trim()
-        location += this.autoCompleteEnd(location, '.nova');
-        
-        this.github.writeFile(this.repo.user.login, this.repo.name, ".reactor.yml", ".reactor.yml", "Added .reactor.yml config file", "language: nova\nmainClassLocation: " + location).subscribe(response => {
-            console.log("Wrote: ", response);
-            
-            this.repo.configStatus = "written";
-        }, error => this.handleError({ response: error, type: "create-config" }));
-    }
-    
-    autoCompleteEnd(value: string, end: string) {
-        function endsWith(str, v) {
-            var i = str.indexOf(v);
-            
-            return i >= 0 && i == str.length - v.length;
-        }
-        
-        if (value) {
-            for (var i = end.length; i > 0; i--) {
-                if (endsWith(value, end.substring(0, i))) {
-                    return end.substring(i);
-                }
-            }
-        }
-        
-        return end;
     }
     
     private setLoggedInInfo() {

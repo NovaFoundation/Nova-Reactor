@@ -11,6 +11,7 @@ import { GithubUser } from './githubUser.component';
 import { GithubRepo } from './githubRepo.component';
 import { RepoResults } from './components/repoResults.component';
 import { RepoStats } from './components/repoStats.component';
+import { ConfigSetup } from './components/configSetup.component';
 import { CollapseSection } from './components/collapseSection.component';
 // import { routing } from './app.routes';
 import { UrlValidator } from './urlValidator.directive';
@@ -18,7 +19,7 @@ import { Tooltip } from './directives/tooltip.directive';
 
 @NgModule({
   imports:      [ BrowserModule, FormsModule, HttpModule, ChartsModule ],
-  declarations: [ AppComponent, UrlValidator, GithubUser, GithubRepo, RepoResults, RepoStats, Tooltip, CollapseSection ],
+  declarations: [ AppComponent, UrlValidator, GithubUser, GithubRepo, RepoResults, RepoStats, Tooltip, CollapseSection, ConfigSetup ],
   bootstrap:    [ AppComponent ]
 })
 
