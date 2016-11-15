@@ -13,7 +13,6 @@ export class WebRequestService
     private static headers: Headers = new Headers({ 'Accept': 'application/json' });
     
     constructor(private http: Http) {
-        console.log("??? ? ? ? ", http);
         this.updateHeaders();
     }
     
