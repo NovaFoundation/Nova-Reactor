@@ -74,3 +74,21 @@ function b64EncodeUnicode(str) {
         return String.fromCharCode('0x' + p1);
     }));
 }
+
+function autoCompleteEnd(value, end) {
+    function endsWith(str, v) {
+        var i = str.indexOf(v);
+        
+        return i >= 0 && i == str.length - v.length;
+    }
+
+    if (value) {
+        for (var i = end.length; i > 0; i--) {
+            if (endsWith(value, end.substring(0, i))) {
+                return end.substring(i);
+            }
+        }
+    }
+
+    return end;
+}
