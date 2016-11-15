@@ -1,1 +1,30 @@
-<input type="text" placeholder="repository url" validate-input />
+<div class="container">
+    <h1 id="header">NOVA REACTOR</h1>
+    
+    <input style="width: 475px;" type="text" placeholder="repo url, e.g. https://github.com/BSteffaniak/Nova" [url-validate]="repo.url.value" [validator-pattern]="repo.url.validPattern" [(ngModel)]="repo.url.value" (valid-url)="updateUrlComponents($event)" (valid-update)="updateRepoUrlValid($event)" (keyup)="$event.key == 'Enter' && searchRepo()" (ngModelChange)="urlUpdated($event)" />
+    <button class="invalid" [url-validate]="repo.url.value" [validator-pattern]="repo.url.validPattern" (click)="repo.url.valid && searchRepo()">Search</button>
+
+    <repo-results [repo]="repo" (onDataReceived)="repoDataReceived($event)" (onErrorReceived)="handleError($event)" (onConfigStatusReceived)="updateReactorConfigStatus($event)"></repo-results>
+
+    <collapse-section [closed]="!repo.configStatus || repo.configStatus == 'exists'" [openDelay]="400">
+        <h3>This repository requires a <span tooltip="<span class='light-gray'>.reactor.yml</span> is a configuration file that you put in the root folder of your project, similar to a .travis.yml file, that contains metadata on how to build the project." tooltip-max-width="400px"><span class="light-gray">.reactor.yml</span><img src="/Shared/Images/info.svg" class="info-icon" /></span> config file to be set up before continuing</h3>
+        
+        <div class="reactor-config-preview rounded">
+            <span>language</span>: nova<br>
+            <span>mainClassLocation</span>: <span *ngIf="!repo.mainClassLocation" class="placeholder">myproject/subfolder/Main</span><span [textContent]="repo.mainClassLocation"></span><span [ngClass]="{ placeholder: repo.configStatus != 'written' }" [textContent]="autoCompleteEnd(repo.mainClassLocation, '.nova')"></span>
+        </div>
+        
+        <div *ngIf="repo.configStatus == 'requires'">
+            <input style="width: 520px;" type="text" placeholder="main class location, e.g. myproject/subfolder/Main.nova" [(ngModel)]="repo.mainClassLocation" (ngModelChange)="validateMainClassLocation($event)" [ngClass]="{ valid: validMainClassLocation(repo.mainClassLocation), invalid: invalidMainClassLocation(repo.mainClassLocation) }" />
+            <button [ngClass]="{ invalid: !repo.validClassLocation }" (click)="repo.validClassLocation && writeConfigFile()">Confirm</button>
+            <p *ngIf="repo.configError">Error creating config file</p>
+        </div>
+        <div *ngIf="repo.configStatus == 'written'">
+            <p>Successfully wrote <span class="light-gray">.reactor.yml</span> file to the repo.</p>
+        </div>
+    </collapse-section>
+    <collapse-section id="repo-stats-section" end [closed]="!repo.configStatus || ['written', 'exists'].indexOf(repo.configStatus) < 0" [openDelay]="400">
+        <repo-stats *ngIf="repo.data" [repo]="repo.data" [host]="repo.host"></repo-stats>
+    </collapse-section>
+    <p *ngIf="loggedInUser.data" class="user-info"><a [href]="loggedInUser.url" target="_blank" class="username" [textContent]="loggedInUser.name"></a> <a class="logout" (click)="logout()">Logout</a></p>
+</div>
