@@ -15,7 +15,7 @@ declare function eraseCookie(name: string);
 
 @Component({
   selector: 'my-app',
-  templateUrl: './app.component.html',
+  templateUrl: 'app/app.component.html',
   providers: [GithubService, ReactorCoreService, OAuthService]
 })
 
