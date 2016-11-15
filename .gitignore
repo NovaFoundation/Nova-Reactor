@@ -3,3 +3,7 @@
 /node_modules
 /.gradle
 /build
+*.component.js*
+*.module.js*
+*.routes.js*
+main.js*
