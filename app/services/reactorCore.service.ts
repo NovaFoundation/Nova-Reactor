@@ -5,30 +5,21 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
 
+import { WebRequestService } from './WebRequestService';
+
 declare function readCookie(name: string): string;
 
 @Injectable()
-export class ReactorCoreService
+export class ReactorCoreService extends WebRequestService
 {
-    private static headers: Headers = new Headers({ 'Accept': 'application/json' });
+    // public static readonly REACTOR_URL: string = "http://localhost:8080";
+    public static readonly REACTOR_URL: string = "http://api.nova-reactor.com:8080";
     
-    constructor(private http: Http) {
-        this.updateHeaders();
-    }
-    
-    updateHeaders() {
-        var accessToken = readCookie('github_access_token');
-        
-        if (accessToken != null) {
-            if (ReactorCoreService.headers.has('Authorization')) {
-                ReactorCoreService.headers.set('Authorization', 'token ' + accessToken);
-            } else {
-                ReactorCoreService.headers.append('Authorization', 'token ' + accessToken);
-            }
-        }
+    constructor(http: Http) {
+        super(http);
     }
     
     getBuilds(repo: string, commit?: string) {
-        return this.http.get("http://api.nova-reactor.com:8080/builds/" + repo + (commit ? "/" + commit : ""), new RequestOptions({ headers: ReactorCoreService.headers })).map(res => res.json())
+        return this.get(ReactorCoreService.REACTOR_URL + "/builds/" + repo + (commit ? "/" + commit : ""))
     }
 }
