@@ -26,7 +26,7 @@ export class RepoStats implements OnChanges, OnInit {
     }
     
     updatedRepo() {
-        this.core.getBuilds(this.host + "," + this.repo.full_name.replace("/", ",")).subscribe(builds => {
+        this.core.getBuilds(this.host + "/" + this.repo.full_name).subscribe(builds => {
             console.log("Received builds: ", builds);
             
             this.updateData([builds.map(build => {
