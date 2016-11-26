@@ -10,8 +10,7 @@ import { WebRequestService } from './WebRequestService';
 declare function readCookie(name: string): string;
 
 @Injectable()
-export class ReactorCoreService extends WebRequestService
-{
+export class ReactorCoreService extends WebRequestService {
     // public static readonly REACTOR_URL: string = "http://localhost:8080";
     public static readonly REACTOR_URL: string = "http://api.nova-reactor.com:8080";
     
