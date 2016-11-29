@@ -9,9 +9,9 @@ The advantage of the profiling with the Nova-Reactor is that the profiling is do
 
 This multilingual approach to profiling offers the following advantages:
 
-  * Performance verification.
-  * More in-depth performance optimizations.
-  * Objective algorithmic performance.
+  * Performance verification
+  * More in-depth performance optimizations
+  * Objective algorithmic performance
 
 The [Nova Reactor Core](https://github.com/NovaFoundation/Nova-Reactor-Core) is where the analysis occurs.
 
