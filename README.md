@@ -15,4 +15,4 @@ This multilingual approach to profiling offers the following advantages:
 
 The [Nova Reactor Core](https://github.com/NovaFoundation/Nova-Reactor-Core) is where the analysis occurs.
 
-© 2016-2016 Nova
+© 2016-2017 Nova
